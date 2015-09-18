@@ -1,5 +1,6 @@
 package com.akhaltech.service.impl;
 
+import com.akhaltech.constant.GlobalConstant;
 import com.akhaltech.model.DoctorSearch;
 import com.akhaltech.service.DoctorService;
 import com.mongodb.MongoClient;
@@ -8,14 +9,13 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import org.apache.log4j.Logger;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.or;
 
 /**
  * Created by vince on 2015-07-14.
@@ -38,13 +38,14 @@ public class DoctorServiceImpl implements DoctorService {
         init();
 
         try {
-            MongoCollection<Document> collection = db.getCollection("doctor");
-            MongoCursor<Document> cursor = collection.find(
-                or(
-                    eq("profile.surname", Pattern.compile(search.getName(), Pattern.CASE_INSENSITIVE)),
-                    eq("profile.givenName", Pattern.compile(search.getName(), Pattern.CASE_INSENSITIVE))
-                )
-            ).iterator();
+            MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_DOCTOR);
+            Bson allConditions = search.getSearchConditions();
+            MongoCursor<Document> cursor = null;
+            if(allConditions == null) {
+                cursor = collection.find().iterator();
+            }else {
+                cursor = collection.find(allConditions).iterator();
+            }
 
             List<String> doctorJsonList = null;
             if(cursor != null) {
@@ -73,9 +74,9 @@ public class DoctorServiceImpl implements DoctorService {
         init();
 
         try {
-            MongoCollection<Document> collection = db.getCollection("doctor");
+            MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_DOCTOR);
             Document doctor = collection.find(
-                eq("_id", id)
+                eq(GlobalConstant.DEFAULT_ID_KEY, id)
             ).first();
 
             String doctorJson = null;
