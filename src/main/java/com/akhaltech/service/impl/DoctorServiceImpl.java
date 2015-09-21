@@ -29,7 +29,7 @@ public class DoctorServiceImpl implements DoctorService {
 
     private void init() {
         mongoClient = new MongoClient("localhost" , 27017);
-        db = mongoClient.getDatabase("doctornearme");
+        db = mongoClient.getDatabase("doctornearby");
     }
 
     @Override
