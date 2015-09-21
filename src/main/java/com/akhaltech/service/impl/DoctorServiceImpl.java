@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Sorts.ascending;
 
 /**
  * Created by vince on 2015-07-14.
@@ -41,10 +42,14 @@ public class DoctorServiceImpl implements DoctorService {
             MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_DOCTOR);
             Bson allConditions = search.getSearchConditions();
             MongoCursor<Document> cursor = null;
+
+            List<String> sortingList = new ArrayList<String>();
+            sortingList.add("profile.surname");
+            sortingList.add("profile.givenName");
             if(allConditions == null) {
-                cursor = collection.find().iterator();
+                cursor = collection.find().limit(GlobalConstant.DEFAULT_PAGE_SIZE).iterator();
             }else {
-                cursor = collection.find(allConditions).iterator();
+                cursor = collection.find(allConditions).sort(ascending(sortingList)).skip(search.getSkip()).limit(search.getLimit()).iterator();
             }
 
             List<String> doctorJsonList = null;

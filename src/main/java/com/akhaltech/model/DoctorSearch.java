@@ -1,5 +1,6 @@
 package com.akhaltech.model;
 
+import com.akhaltech.constant.GlobalConstant;
 import org.bson.conversions.Bson;
 
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ public class DoctorSearch {
     private String location;
     private String postcode;
     private String hospital;
+    private int skip = 0;
+    private int limit = GlobalConstant.DEFAULT_PAGE_SIZE;
 
     public Bson getSearchConditions() {
         List<Bson> conditionList = new ArrayList<Bson>();
@@ -144,5 +147,21 @@ public class DoctorSearch {
 
     public void setHospital(String hospital) {
         this.hospital = hospital;
+    }
+
+    public int getSkip() {
+        return skip;
+    }
+
+    public void setSkip(int skip) {
+        this.skip = skip;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 }
