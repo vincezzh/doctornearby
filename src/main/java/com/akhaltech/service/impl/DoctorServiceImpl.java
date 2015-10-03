@@ -47,7 +47,7 @@ public class DoctorServiceImpl implements DoctorService {
             sortingList.add("profile.surname");
             sortingList.add("profile.givenName");
             if(allConditions == null) {
-                cursor = collection.find().limit(GlobalConstant.DEFAULT_PAGE_SIZE).iterator();
+                cursor = collection.find().sort(ascending(sortingList)).skip(search.getSkip()).limit(search.getLimit()).iterator();
             }else {
                 cursor = collection.find(allConditions).sort(ascending(sortingList)).skip(search.getSkip()).limit(search.getLimit()).iterator();
             }

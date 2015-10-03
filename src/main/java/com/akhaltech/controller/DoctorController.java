@@ -3,12 +3,14 @@ package com.akhaltech.controller;
 import com.akhaltech.business.DoctorBD;
 import com.akhaltech.model.Doctor;
 import com.akhaltech.model.DoctorSearch;
+import com.akhaltech.model.HTMLTemplate;
 import com.akhaltech.rest.RestResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +32,9 @@ public class DoctorController {
 
         try {
             List<Doctor> doctorList = doctorBD.search(search);
+            if(doctorList == null)
+                doctorList = new ArrayList<Doctor>();
+
             return new RestResponse<List<Doctor>>(true, null, doctorList);
         }catch (Exception e) {
             log.error(e.getStackTrace());
@@ -49,6 +54,22 @@ public class DoctorController {
         }catch (Exception e) {
             log.error(e.getStackTrace());
             return new RestResponse<Doctor>(false, e.getMessage(), null);
+        }
+
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/{id}/profile", method = RequestMethod.GET, produces = "application/json")
+    public RestResponse<HTMLTemplate> getDoctorProfile(@PathVariable("id") String id) {
+        log.info("DoctorController.getRecipe()");
+
+        try {
+            Doctor doctor = doctorBD.getDoctorById(id);
+            HTMLTemplate htmlTemplate = doctorBD.generateDoctorProfileHtml(doctor);
+            return new RestResponse<HTMLTemplate>(true, null, htmlTemplate);
+        }catch (Exception e) {
+            log.error(e.getStackTrace());
+            return new RestResponse<HTMLTemplate>(false, e.getMessage(), null);
         }
 
     }

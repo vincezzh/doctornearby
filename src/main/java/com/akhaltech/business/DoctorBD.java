@@ -2,14 +2,17 @@ package com.akhaltech.business;
 
 import com.akhaltech.model.Doctor;
 import com.akhaltech.model.DoctorSearch;
+import com.akhaltech.model.HTMLTemplate;
 import com.akhaltech.service.DoctorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
+import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.velocity.VelocityEngineUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Created by vince on 2015-09-15.
@@ -22,6 +25,9 @@ public class DoctorBD {
 
     @Autowired
     private DoctorService doctorService;
+
+    @Autowired
+    private final VelocityEngine velocityEngine = null;
 
     public List<Doctor> search(DoctorSearch search) throws Exception {
         log.info("DoctorBD.search()");
@@ -47,5 +53,25 @@ public class DoctorBD {
             doctor = mapper.readValue(doctorJson, Doctor.class);
 
         return doctor;
+    }
+
+    public HTMLTemplate generateDoctorProfileHtml(Doctor doctor) {
+        log.info("DoctorBD.generateDoctorProfileHtml()");
+
+        HTMLTemplate htmlTemplate = new HTMLTemplate();
+        final Properties properties = new Properties();
+        try {
+            properties.load(this.getClass().getResourceAsStream("/htmlTemplate.properties"));
+            String path = properties.getProperty("doctor.profile.template");
+            Map<String, Object> model = new HashMap<String, Object>();
+            model.put("doctor", doctor);
+            model.put("baseURL", "http://localhost:9091/doctornearby");
+            String html = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, path, "UTF-8", model);
+            htmlTemplate.setHtml(html);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return htmlTemplate;
     }
 }

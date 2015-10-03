@@ -34,38 +34,38 @@ public class DoctorSearch {
             Bson condition = eq("_id", doctorId);
             conditionList.add(condition);
         }
-        if(name != null) {
+        if(name != null && !"".equals(name.trim())) {
             Bson condition = or(
                 eq("profile.surname", Pattern.compile(name, Pattern.CASE_INSENSITIVE)),
                 eq("profile.givenName", Pattern.compile(name, Pattern.CASE_INSENSITIVE))
             );
             conditionList.add(condition);
         }
-        if(gender != null) {
+        if(gender != null && !"".equals(gender.trim())) {
             Bson condition = eq("profile.gender", gender);
             conditionList.add(condition);
         }
-        if(language != null) {
+        if(language != null && !"".equals(language.trim())) {
             Bson condition = eq("profile.languageList", language);
             conditionList.add(condition);
         }
-        if(physicianType != null) {
-            Bson condition = eq("specialtyList.type", Pattern.compile(physicianType, Pattern.CASE_INSENSITIVE));
+        if(physicianType != null && !"".equals(physicianType.trim())) {
+            Bson condition = eq("specialtyList.name", Pattern.compile(physicianType, Pattern.CASE_INSENSITIVE));
             conditionList.add(condition);
         }
-        if(registrationStatus != null) {
+        if(registrationStatus != null && !"".equals(registrationStatus.trim())) {
             Bson condition = eq("registration.registrationStatus", Pattern.compile(registrationStatus, Pattern.CASE_INSENSITIVE));
             conditionList.add(condition);
         }
-        if(location != null) {
+        if(location != null && !"".equals(location.trim())) {
             Bson condition = eq("location.addressSummary", Pattern.compile(location, Pattern.CASE_INSENSITIVE));
             conditionList.add(condition);
         }
-        if(postcode != null) {
+        if(postcode != null && !"".equals(postcode.trim())) {
             Bson condition = eq("location.addressSummary", Pattern.compile(postcode, Pattern.CASE_INSENSITIVE));
             conditionList.add(condition);
         }
-        if(hospital != null) {
+        if(hospital != null && !"".equals(hospital.trim())) {
             Bson condition = eq("privilegeList.hospitalDetail", Pattern.compile(hospital, Pattern.CASE_INSENSITIVE));
             conditionList.add(condition);
         }

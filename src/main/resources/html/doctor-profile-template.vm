@@ -1,0 +1,267 @@
+<!doctype html>
+<!--[if IE 7 ]>    <html lang="en-gb" class="isie ie7 oldie no-js"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en-gb" class="isie ie8 oldie no-js"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en-gb" class="isie ie9 no-js"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="en-gb" class="no-js">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!--[if lt IE 9]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <![endif]-->
+    <title>Dr. $doctor.profile.surname</title>
+    <meta name="description" content="">
+    <meta name="author" content="AkhalTech">
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lte IE 8]>
+    <script type="text/javascript" src="http://explorercanvas.googlecode.com/svn/trunk/excanvas.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="$baseURL/htmltemplate/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="$baseURL/htmltemplate/css/isotope.css" media="screen" />
+    <link rel="stylesheet" href="$baseURL/htmltemplate/js/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="$baseURL/htmltemplate/css/da-slider.css" />
+    <!-- Owl Carousel Assets -->
+    <link href="$baseURL/htmltemplate/js/owl-carousel/owl.carousel.css" rel="stylesheet">
+    <link rel="stylesheet" href="$baseURL/htmltemplate/css/styles.css" />
+    <!-- Font Awesome -->
+    <link href="$baseURL/htmltemplate/font/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+<header class="header">
+    <div class="container">
+        <nav class="navbar navbar-inverse" role="navigation">
+            <div class="navbar-header">
+                <button type="button" id="nav-toggle" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="#" class="navbar-brand scroll-top logo"><b>Dr. $doctor.profile.surname</b></a>
+            </div>
+            <!--/.navbar-header-->
+            <div id="main-nav" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav" id="mainNav">
+                    <li class="active"><a href="#introText" class="scroll-link">About</a></li>
+                    <li><a href="#skills" class="scroll-link">Specialties & Hospital Privileges</a></li>
+                    <li><a href="#postgraduateTraining" class="scroll-link">Postgraduate Training</a></li>
+                    <li><a href="#registrationHistory" class="scroll-link">Registration History</a></li>
+                </ul>
+            </div>
+            <!--/.navbar-collapse-->
+        </nav>
+        <!--/.navbar-->
+    </div>
+    <!--/.container-->
+</header>
+<!--/.header-->
+<div id="#top"></div>
+
+<section id="introText">
+    <div class="container">
+        <div class="text-center">
+            <h3 style="color: #CC4646">$doctor.profile.surname, $doctor.profile.givenName</h3>
+            <p>
+            <ul>
+                <li>CPSO#: $doctor.profile.id</li>
+                <li>$doctor.location.addressSummary</li>
+                <li>$doctor.location.contactSummary</li>
+                <li>Former Name: $doctor.profile.formerName</li>
+                <li>Gender: $doctor.profile.gender</li>
+                <li>
+                    Language Fluency:
+                    #foreach ($language in $doctor.profile.languageList)
+                        $language
+                    #end
+                </li>
+                <li>Corporation Name: $doctor.location.medicalLicensesInOtherJurisdictions</li>
+                <li>Certificate of Authorization Status: Issued Date: $doctor.location.corporationIssuedDate</li>
+            </ul>
+            </p>
+        </div>
+    </div>
+</section>
+
+<!--Skills-->
+<section id="skills" class="secPad">
+    <div class="container">
+        <div class="heading text-center">
+            <!-- Heading -->
+            <h2>Specialties & Hospital Privileges</h2>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <h2 class="skillh2">Specialties</h2>
+                <div class="row">
+                    <div class="col-md-12 skilltitle">
+                        <table width="100%">
+                            <tr>
+                                <th width="33%">Specialty</th>
+                                <th width="33%">Issued On</th>
+                                <th width="34%">Type</th>
+                            </tr>
+                            #foreach ($specialty in $doctor.specialtyList)
+                                <tr>
+                                    <td>$specialty.name</td>
+                                    <td>$specialty.issueOn</td>
+                                    <td>$specialty.type</td>
+                                </tr>
+                            #end
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <h2 class="skillh2">Hospital Privileges</h2>
+                <div class="row">
+                    <div class="col-md-12 skilltitle">
+                        <ul>
+                            #foreach ($privilege in $doctor.privilegeList)
+                                <li>$privilege.hospitalDetail</li>
+                            #end
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--Postgraduate Training-->
+<section id="postgraduateTraining" class="secPad white">
+    <div class="container">
+        <div class="heading text-center">
+            <!-- Heading -->
+            <h2>Postgraduate Training</h2>
+        </div>
+
+        <div class="timeline">
+            <div class="row timeline-movement timeline-movement-top">
+                <div class="timeline-badge timeline-future-movement">
+                    <a href="#">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </a>
+                </div>
+                <div class="timeline-badge timeline-filter-movement">
+                    <a href="#">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </a>
+                </div>
+            </div>
+
+            #foreach ($training in $doctor.registration.trainingList)
+                <div class="row timeline-movement">
+                    <div class="timeline-badge">
+                        <span class="timeline-balloon-date-day">$training.fromMonth</span>
+                        <span class="timeline-balloon-date-month">$training.fromYear</span>
+                    </div>
+                    <div class="col-sm-6  timeline-item">
+                        <div class="row">
+                            <div class="col-sm-11">
+                                #if ( $foreach.index % 2 == 0)
+                                    #set ($creditsOrDebits = "credits")
+                                #else
+                                    #set ($creditsOrDebits = "debits")
+                                #end
+                                <div class="timeline-panel $creditsOrDebits">
+                                    <ul class="timeline-panel-ul">
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li><span class="importo">$training.medicalSchool</span></li>
+                                        <li><span class="causale">$training.discipline, $training.type</span> </li>
+                                        <li><p><small class="text-muted">$training.from - $training.to</small></p> </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            #end
+        </div>
+    </div>
+</section>
+
+<!--Registration History-->
+<section id="registrationHistory" class="secPad">
+    <div class="container">
+        <div class="heading text-center">
+            <!-- Heading -->
+            <h2>Registration History</h2>
+        </div>
+
+        <div class="timeline">
+            <div class="row timeline-movement timeline-movement-top">
+                <div class="timeline-badge timeline-future-movement">
+                    <a href="#">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </a>
+                </div>
+                <div class="timeline-badge timeline-filter-movement">
+                    <a href="#">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </a>
+                </div>
+            </div>
+            #foreach ($history in $doctor.registration.historyList)
+                <div class="row timeline-movement">
+                    <div class="timeline-badge">
+                        <span class="timeline-balloon-date-day">$history.fromEffectiveMonth</span>
+                        <span class="timeline-balloon-date-month">$history.fromEffectiveYear</span>
+                    </div>
+                    <div class="col-sm-6  timeline-item">
+                        <div class="row">
+                            <div class="col-sm-11">
+                                #if ( $foreach.index % 2 == 0)
+                                    #set ($creditsOrDebits = "credits")
+                                #else
+                                    #set ($creditsOrDebits = "debits")
+                                #end
+                                <div class="timeline-panel $creditsOrDebits">
+                                    <ul class="timeline-panel-ul">
+                                        <li>&nbsp;</li>
+                                        <li><p><small class="text-muted">$history.effectiveDate</small></p> </li>
+                                        <li><span class="importo">$history.description</span></li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            #end
+        </div>
+    </div>
+</section>
+
+<!--/.page-section-->
+<section class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                Copyright 2016 | All Rights Reserved  -- <a href="http://www.akhaltech.com">AkhalTech.com</a>
+            </div>
+        </div>
+        <!-- / .row -->
+    </div>
+</section>
+<a href="#top" class="topHome"><i class="fa fa-chevron-up fa-2x"></i></a>
+
+<!--[if lte IE 8]><script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script><![endif]-->
+<script src="$baseURL/htmltemplate/js/modernizr-latest.js"></script>
+<script src="$baseURL/htmltemplate/js/jquery-1.8.2.min.js" type="text/javascript"></script>
+<script src="$baseURL/htmltemplate/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="$baseURL/htmltemplate/js/jquery.isotope.min.js" type="text/javascript"></script>
+<script src="$baseURL/htmltemplate/js/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+<script src="$baseURL/htmltemplate/js/jquery.nav.js" type="text/javascript"></script>
+<script src="$baseURL/htmltemplate/js/jquery.cslider.js" type="text/javascript"></script>
+<script src="$baseURL/htmltemplate/js/custom.js" type="text/javascript"></script>
+<script src="$baseURL/htmltemplate/js/owl-carousel/owl.carousel.js"></script>
+</body>
+</html>

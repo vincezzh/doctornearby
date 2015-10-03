@@ -9,6 +9,24 @@ public class PostgraduateTraining {
     private String medicalSchool;
     private String from;
     private String to;
+    private String fromYear;
+    private String fromMonth;
+
+    public String getFromYear() {
+        String fromYear = "";
+        if(from != null && from.split(" ").length == 3) {
+            fromYear = from.split(" ")[2];
+        }
+        return fromYear;
+    }
+
+    public String getFromMonth() {
+        String fromMonth = "";
+        if(from != null && from.split(" ").length == 3) {
+            fromMonth = from.split(" ")[1];
+        }
+        return fromMonth;
+    }
 
     public String getType() {
         return type;
