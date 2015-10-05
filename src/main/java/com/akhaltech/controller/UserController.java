@@ -35,6 +35,7 @@ public class UserController {
             List<Doctor> bookmarkDoctorsList = userBD.getBookmarkDoctors(user.getBookmark().getUserId());
             return new RestResponse<List<Doctor>>(true, null, bookmarkDoctorsList);
         }catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getStackTrace());
             return new RestResponse<List<Doctor>>(false, e.getMessage(), null);
         }
@@ -50,6 +51,7 @@ public class UserController {
             userBD.addBookmark(user.getBookmark());
             return new RestResponse<String>(true, null, null);
         }catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getStackTrace());
             return new RestResponse<String>(false, e.getMessage(), null);
         }
@@ -65,6 +67,7 @@ public class UserController {
             userBD.deleteBookmark(user.getBookmark());
             return new RestResponse<String>(true, null, null);
         }catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getStackTrace());
             return new RestResponse<String>(false, e.getMessage(), null);
         }

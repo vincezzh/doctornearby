@@ -80,10 +80,14 @@ public class DoctorServiceImpl implements DoctorService {
         init();
 
         try {
+            List<String> sortingList = new ArrayList<String>();
+            sortingList.add("profile.surname");
+            sortingList.add("profile.givenName");
+
             MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_DOCTOR);
             MongoCursor<Document> cursor = collection.find(
                     in(GlobalConstant.DEFAULT_ID_KEY, idList)
-            ).iterator();
+            ).sort(ascending(sortingList)).iterator();
 
             List<String> doctorJsonList = null;
             if(cursor != null) {

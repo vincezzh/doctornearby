@@ -37,6 +37,7 @@ public class DoctorController {
 
             return new RestResponse<List<Doctor>>(true, null, doctorList);
         }catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getStackTrace());
             return new RestResponse<List<Doctor>>(false, e.getMessage(), null);
         }
@@ -52,6 +53,7 @@ public class DoctorController {
             Doctor doctor = doctorBD.getDoctorById(id);
             return new RestResponse<Doctor>(true, null, doctor);
         }catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getStackTrace());
             return new RestResponse<Doctor>(false, e.getMessage(), null);
         }
@@ -68,6 +70,7 @@ public class DoctorController {
             HTMLTemplate htmlTemplate = doctorBD.generateDoctorProfileHtml(doctor);
             return new RestResponse<HTMLTemplate>(true, null, htmlTemplate);
         }catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getStackTrace());
             return new RestResponse<HTMLTemplate>(false, e.getMessage(), null);
         }
