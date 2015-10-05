@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.in;
 import static com.mongodb.client.model.Sorts.ascending;
 
 /**
@@ -29,8 +30,8 @@ public class DoctorServiceImpl implements DoctorService {
     private MongoDatabase db = null;
 
     private void init() {
-        mongoClient = new MongoClient("localhost" , 27017);
-        db = mongoClient.getDatabase("doctornearby");
+        mongoClient = new MongoClient(GlobalConstant.DB_SERVER_URL , GlobalConstant.DB_PORT);
+        db = mongoClient.getDatabase(GlobalConstant.DB_NAME);
     }
 
     @Override
@@ -71,6 +72,39 @@ public class DoctorServiceImpl implements DoctorService {
             if(mongoClient != null)
                 mongoClient.close();
         }
+    }
+
+    @Override
+    public List<String> getDoctors(List<String> idList) {
+        log.info("DoctorServiceImpl.getDoctorById()");
+        init();
+
+        try {
+            MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_DOCTOR);
+            MongoCursor<Document> cursor = collection.find(
+                    in(GlobalConstant.DEFAULT_ID_KEY, idList)
+            ).iterator();
+
+            List<String> doctorJsonList = null;
+            if(cursor != null) {
+                try {
+                    while (cursor.hasNext()) {
+                        if(doctorJsonList == null)
+                            doctorJsonList = new ArrayList<String>();
+
+                        doctorJsonList.add(cursor.next().toJson());
+                    }
+                }finally {
+                    cursor.close();
+                }
+            }
+
+            return doctorJsonList;
+        }finally {
+            if(mongoClient != null)
+                mongoClient.close();
+        }
+
     }
 
     @Override

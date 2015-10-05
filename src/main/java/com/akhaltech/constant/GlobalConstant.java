@@ -5,7 +5,12 @@ package com.akhaltech.constant;
  */
 public class GlobalConstant {
 
+    public static final String DB_SERVER_URL = "localhost";
+    public static final int DB_PORT = 27017;
+    public static final String DB_NAME = "doctornearby";
+
     public static final String DEFAULT_ID_KEY = "_id";
     public static final String COLLECTION_DOCTOR = "doctor";
+    public static final String COLLECTION_USER_BOOKMARK = "user_bookmark";
     public static final int DEFAULT_PAGE_SIZE = 25;
 }

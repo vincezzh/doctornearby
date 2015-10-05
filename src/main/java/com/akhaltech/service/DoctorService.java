@@ -10,6 +10,7 @@ import java.util.List;
 public interface DoctorService {
 
     List<String> search(DoctorSearch search);
+    List<String> getDoctors(List<String> idList);
     String getDoctorById(String id);
 
 }

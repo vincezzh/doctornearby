@@ -34,7 +34,7 @@ public class DoctorBD {
 
         List<String> doctorJSonList = doctorService.search(search);
         List<Doctor> doctorList = null;
-        if(doctorJSonList != null) {
+        if(doctorJSonList != null && doctorJSonList.size() > 0) {
             doctorList = new ArrayList<Doctor>();
             for(String doctorJson : doctorJSonList) {
                 doctorList.add(mapper.readValue(doctorJson, Doctor.class));
