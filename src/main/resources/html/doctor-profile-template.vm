@@ -65,7 +65,7 @@
 <section id="introText">
     <div class="container">
         <div class="text-center">
-            <h3 style="color: #CC4646">$doctor.profile.surname, $doctor.profile.givenName</h3>
+            <!--<h3 style="color: #CC4646">$doctor.profile.surname, $doctor.profile.givenName</h3>-->
             <p>
             <ul>
                 <li>CPSO#: $doctor.profile.id</li>
