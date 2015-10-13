@@ -2,6 +2,7 @@ package com.akhaltech.controller;
 
 import com.akhaltech.business.UserBD;
 import com.akhaltech.model.Doctor;
+import com.akhaltech.model.Medicine;
 import com.akhaltech.model.User;
 import com.akhaltech.rest.RestResponse;
 import org.apache.log4j.Logger;
@@ -65,6 +66,54 @@ public class UserController {
 
         try {
             userBD.deleteBookmark(user.getBookmark());
+            return new RestResponse<String>(true, null, null);
+        }catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getStackTrace());
+            return new RestResponse<String>(false, e.getMessage(), null);
+        }
+
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/medicine/list", method = RequestMethod.POST, produces = "application/json")
+    public RestResponse<List<Medicine>> getUserMedicines(@RequestBody User user) {
+        log.info("UserController.getUserMedicines()");
+
+        try {
+            List<Medicine> medicineList = userBD.getMedicines(user.getMedicine().getUserId());
+            return new RestResponse<List<Medicine>>(true, null, medicineList);
+        }catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getStackTrace());
+            return new RestResponse<List<Medicine>>(false, e.getMessage(), null);
+        }
+
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/medicine/add", method = RequestMethod.POST, produces = "application/json")
+    public RestResponse<String> addUserMedicine(@RequestBody User user) {
+        log.info("UserController.addUserMedicine()");
+
+        try {
+            userBD.addMedicine(user.getMedicine());
+            return new RestResponse<String>(true, null, null);
+        }catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getStackTrace());
+            return new RestResponse<String>(false, e.getMessage(), null);
+        }
+
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/medicine/delete", method = RequestMethod.POST, produces = "application/json")
+    public RestResponse<String> deleteUserMedicine(@RequestBody User user) {
+        log.info("UserController.deleteUserMedicine()");
+
+        try {
+            userBD.deleteMedicine(user.getMedicine());
             return new RestResponse<String>(true, null, null);
         }catch (Exception e) {
             e.printStackTrace();

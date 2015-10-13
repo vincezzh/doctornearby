@@ -1,5 +1,6 @@
 package com.akhaltech.business;
 
+import com.akhaltech.constant.GlobalConstant;
 import com.akhaltech.model.Doctor;
 import com.akhaltech.model.DoctorSearch;
 import com.akhaltech.model.HTMLTemplate;
@@ -65,7 +66,7 @@ public class DoctorBD {
             String path = properties.getProperty("doctor.profile.template");
             Map<String, Object> model = new HashMap<String, Object>();
             model.put("doctor", doctor);
-            model.put("baseURL", "http://localhost:9091/doctornearby");
+            model.put("baseURL", GlobalConstant.APP_SERVER_URL + "/doctornearby");
             String html = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, path, "UTF-8", model);
             htmlTemplate.setHtml(html);
         } catch (IOException e) {

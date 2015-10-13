@@ -1,6 +1,7 @@
 package com.akhaltech.service.impl;
 
 import com.akhaltech.constant.GlobalConstant;
+import com.akhaltech.model.Medicine;
 import com.akhaltech.service.UserService;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -8,6 +9,7 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import org.apache.log4j.Logger;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.List;
 
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Sorts.ascending;
 
 /**
  * Created by vince on 2015-10-04.
@@ -108,9 +111,76 @@ public class UserServiceImpl implements UserService {
         try {
             MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_USER_BOOKMARK);
             collection.deleteOne(and(
-                eq("userId", userId),
-                eq("doctorId", doctorId)
+                    eq("userId", userId),
+                    eq("doctorId", doctorId)
             ));
+        }finally {
+            if(mongoClient != null)
+                mongoClient.close();
+        }
+    }
+
+    @Override
+    public List<String> getMedicines(String userId) {
+        log.info("UserServiceImpl.getMedicines()");
+        init();
+
+        try {
+            MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_USER_MEDICINE);
+            List<String> sortingList = new ArrayList<String>();
+            sortingList.add("createdTime");
+            MongoCursor<Document> cursor = collection.find(eq("userId", userId)).sort(ascending(sortingList)).iterator();
+
+            List<String> medicineJsonList = null;
+            if(cursor != null) {
+                try {
+                    while (cursor.hasNext()) {
+                        if(medicineJsonList == null)
+                            medicineJsonList = new ArrayList<String>();
+
+                        medicineJsonList.add(cursor.next().toJson());
+                    }
+                }finally {
+                    cursor.close();
+                }
+            }
+
+            return medicineJsonList;
+        }finally {
+            if(mongoClient != null)
+                mongoClient.close();
+        }
+    }
+
+    @Override
+    public void addMedicine(Medicine medicine) {
+        log.info("UserServiceImpl.addMedicine()");
+        init();
+
+        try {
+            MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_USER_MEDICINE);
+
+            Document newBookmark = new Document("userId", medicine.getUserId())
+                    .append("name", medicine.getName())
+                    .append("periodMinutes", medicine.getPeriodMinutes())
+                    .append("startTime", medicine.getStartTime());
+            collection.insertOne(newBookmark);
+        }finally {
+            if(mongoClient != null)
+                mongoClient.close();
+        }
+    }
+
+    @Override
+    public void deleteMedicine(Medicine medicine) {
+        log.info("UserServiceImpl.deleteMedicine()");
+        init();
+
+        try {
+            MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_USER_MEDICINE);
+            collection.deleteOne(
+                    eq("_id", new ObjectId(medicine.get_id().get$oid()))
+            );
         }finally {
             if(mongoClient != null)
                 mongoClient.close();

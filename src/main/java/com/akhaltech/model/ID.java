@@ -1,9 +1,9 @@
 package com.akhaltech.model;
 
 /**
- * Created by vince on 2015-10-05.
+ * Created by vince on 2015-10-13.
  */
-public class ObjectId {
+public class ID {
     private String $oid;
 
     public String get$oid() {

@@ -2,6 +2,7 @@ package com.akhaltech.business;
 
 import com.akhaltech.model.Bookmark;
 import com.akhaltech.model.Doctor;
+import com.akhaltech.model.Medicine;
 import com.akhaltech.service.DoctorService;
 import com.akhaltech.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,8 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by vince on 2015-09-15.
@@ -86,6 +86,51 @@ public class UserBD {
         log.info("UserBD.deleteBookmark()");
 
         userService.deleteBookmark(bookmark.getUserId(), bookmark.getDoctorId());
+    }
+
+    public List<Medicine> getMedicines(String userId) throws Exception {
+        log.info("UserBD.getMedicines()");
+
+        List<String> medicineJSonList = userService.getMedicines(userId);
+        List<Medicine> medicineList = null;
+        if(medicineJSonList != null && medicineJSonList.size() > 0) {
+            medicineList = new ArrayList<Medicine>();
+            for(String medicineJSon : medicineJSonList) {
+                medicineList.add(mapper.readValue(medicineJSon, Medicine.class));
+            }
+        }
+
+        if(medicineList != null && medicineList.size() > 0) {
+            Iterator<Medicine> i = medicineList.iterator();
+            while(i.hasNext()) {
+                Medicine medicine = i.next();
+                if(medicine.getLeftMinutes() == 0) {
+                    i.remove();
+                    deleteMedicine(medicine);
+                }
+            }
+        }
+
+        Collections.sort(medicineList, new Comparator<Medicine>() {
+            @Override
+            public int compare(Medicine o1, Medicine o2) {
+                return o1.getLeftMinutes() <= o2.getLeftMinutes()? -1 : 1;
+            }
+        });
+
+        return medicineList;
+    }
+
+    public void addMedicine(Medicine medicine) throws Exception {
+        log.info("UserBD.addMedicine()");
+
+        userService.addMedicine(medicine);
+    }
+
+    public void deleteMedicine(Medicine medicine) {
+        log.info("UserBD.deleteMedicine()");
+
+        userService.deleteMedicine(medicine);
     }
 
 }
