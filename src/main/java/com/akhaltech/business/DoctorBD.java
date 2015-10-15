@@ -5,6 +5,7 @@ import com.akhaltech.model.Doctor;
 import com.akhaltech.model.DoctorSearch;
 import com.akhaltech.model.HTMLTemplate;
 import com.akhaltech.service.DoctorService;
+import com.akhaltech.util.PropertyUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.apache.velocity.app.VelocityEngine;
@@ -67,6 +68,12 @@ public class DoctorBD {
             Map<String, Object> model = new HashMap<String, Object>();
             model.put("doctor", doctor);
             model.put("baseURL", GlobalConstant.APP_SERVER_URL + "/doctornearby");
+            try {
+                PropertyUtil props = new PropertyUtil();
+                model.put("baseURL", props.getProperty("application.server.url") + "/doctornearby");
+            } catch (Exception e) {
+                log.error(e.getMessage());
+            }
             String html = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, path, "UTF-8", model);
             htmlTemplate.setHtml(html);
         } catch (IOException e) {

@@ -2,8 +2,8 @@ package com.akhaltech.service.impl;
 
 import com.akhaltech.constant.GlobalConstant;
 import com.akhaltech.model.Medicine;
+import com.akhaltech.service.BaseServiceImpl;
 import com.akhaltech.service.UserService;
-import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -23,21 +23,14 @@ import static com.mongodb.client.model.Sorts.ascending;
  * Created by vince on 2015-10-04.
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends BaseServiceImpl implements UserService {
 
     private final static Logger log = Logger.getLogger(UserServiceImpl.class);
-    private MongoClient mongoClient = null;
-    private MongoDatabase db = null;
-
-    private void init() {
-        mongoClient = new MongoClient(GlobalConstant.DB_SERVER_URL , GlobalConstant.DB_PORT);
-        db = mongoClient.getDatabase(GlobalConstant.DB_NAME);
-    }
 
     @Override
     public String getBookmark(String userId, String doctorId) {
         log.info("UserServiceImpl.getBookmark()");
-        init();
+        MongoDatabase db = initialize();
 
         try {
             MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_USER_BOOKMARK);
@@ -52,15 +45,14 @@ public class UserServiceImpl implements UserService {
 
             return doctorJson;
         }finally {
-            if(mongoClient != null)
-                mongoClient.close();
+            close();
         }
     }
 
     @Override
     public List<String> getBookmarks(String userId) {
         log.info("UserServiceImpl.getBookmarks()");
-        init();
+        MongoDatabase db = initialize();
 
         try {
             MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_USER_BOOKMARK);
@@ -82,15 +74,14 @@ public class UserServiceImpl implements UserService {
 
             return doctorIdJsonList;
         }finally {
-            if(mongoClient != null)
-                mongoClient.close();
+            close();
         }
     }
 
     @Override
     public void addBookmark(String userId, String doctorId) {
         log.info("UserServiceImpl.addBookmark()");
-        init();
+        MongoDatabase db = initialize();
 
         try {
             MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_USER_BOOKMARK);
@@ -98,15 +89,14 @@ public class UserServiceImpl implements UserService {
             Document newBookmark = new Document("userId", userId).append("doctorId", doctorId);
             collection.insertOne(newBookmark);
         }finally {
-            if(mongoClient != null)
-                mongoClient.close();
+            close();
         }
     }
 
     @Override
     public void deleteBookmark(String userId, String doctorId) {
         log.info("UserServiceImpl.deleteBookmark()");
-        init();
+        MongoDatabase db = initialize();
 
         try {
             MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_USER_BOOKMARK);
@@ -115,15 +105,14 @@ public class UserServiceImpl implements UserService {
                     eq("doctorId", doctorId)
             ));
         }finally {
-            if(mongoClient != null)
-                mongoClient.close();
+            close();
         }
     }
 
     @Override
     public List<String> getMedicines(String userId) {
         log.info("UserServiceImpl.getMedicines()");
-        init();
+        MongoDatabase db = initialize();
 
         try {
             MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_USER_MEDICINE);
@@ -147,15 +136,14 @@ public class UserServiceImpl implements UserService {
 
             return medicineJsonList;
         }finally {
-            if(mongoClient != null)
-                mongoClient.close();
+            close();
         }
     }
 
     @Override
     public void addMedicine(Medicine medicine) {
         log.info("UserServiceImpl.addMedicine()");
-        init();
+        MongoDatabase db = initialize();
 
         try {
             MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_USER_MEDICINE);
@@ -166,15 +154,14 @@ public class UserServiceImpl implements UserService {
                     .append("startTime", medicine.getStartTime());
             collection.insertOne(newBookmark);
         }finally {
-            if(mongoClient != null)
-                mongoClient.close();
+            close();
         }
     }
 
     @Override
     public void deleteMedicine(Medicine medicine) {
         log.info("UserServiceImpl.deleteMedicine()");
-        init();
+        MongoDatabase db = initialize();
 
         try {
             MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_USER_MEDICINE);
@@ -182,8 +169,7 @@ public class UserServiceImpl implements UserService {
                     eq("_id", new ObjectId(medicine.get_id().get$oid()))
             );
         }finally {
-            if(mongoClient != null)
-                mongoClient.close();
+            close();
         }
     }
 }

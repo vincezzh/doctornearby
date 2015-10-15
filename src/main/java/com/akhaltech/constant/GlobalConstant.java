@@ -5,7 +5,6 @@ package com.akhaltech.constant;
  */
 public class GlobalConstant {
 
-//    public static final String APP_SERVER_URL = "http://192.168.0.22:9091";
     public static final String APP_SERVER_URL = "http://localhost:9091";
     public static final String DB_SERVER_URL = "localhost";
     public static final int DB_PORT = 27017;

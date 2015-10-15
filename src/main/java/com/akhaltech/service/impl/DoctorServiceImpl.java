@@ -2,8 +2,8 @@ package com.akhaltech.service.impl;
 
 import com.akhaltech.constant.GlobalConstant;
 import com.akhaltech.model.DoctorSearch;
+import com.akhaltech.service.BaseServiceImpl;
 import com.akhaltech.service.DoctorService;
-import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -23,21 +23,14 @@ import static com.mongodb.client.model.Sorts.ascending;
  * Created by vince on 2015-07-14.
  */
 @Service
-public class DoctorServiceImpl implements DoctorService {
+public class DoctorServiceImpl extends BaseServiceImpl implements DoctorService {
 
     private final static Logger log = Logger.getLogger(DoctorServiceImpl.class);
-    private MongoClient mongoClient = null;
-    private MongoDatabase db = null;
-
-    private void init() {
-        mongoClient = new MongoClient(GlobalConstant.DB_SERVER_URL , GlobalConstant.DB_PORT);
-        db = mongoClient.getDatabase(GlobalConstant.DB_NAME);
-    }
 
     @Override
     public List<String> search(DoctorSearch search) {
         log.info("DoctorServiceImpl.search()");
-        init();
+        MongoDatabase db = initialize();
 
         try {
             MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_DOCTOR);
@@ -69,15 +62,14 @@ public class DoctorServiceImpl implements DoctorService {
 
             return doctorJsonList;
         }finally {
-            if(mongoClient != null)
-                mongoClient.close();
+            close();
         }
     }
 
     @Override
     public List<String> getDoctors(List<String> idList) {
         log.info("DoctorServiceImpl.getDoctorById()");
-        init();
+        MongoDatabase db = initialize();
 
         try {
             List<String> sortingList = new ArrayList<String>();
@@ -105,8 +97,7 @@ public class DoctorServiceImpl implements DoctorService {
 
             return doctorJsonList;
         }finally {
-            if(mongoClient != null)
-                mongoClient.close();
+            close();
         }
 
     }
@@ -114,7 +105,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public String getDoctorById(String id) {
         log.info("DoctorServiceImpl.getDoctorById()");
-        init();
+        MongoDatabase db = initialize();
 
         try {
             MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_DOCTOR);
@@ -128,8 +119,7 @@ public class DoctorServiceImpl implements DoctorService {
 
             return doctorJson;
         }finally {
-            if(mongoClient != null)
-                mongoClient.close();
+            close();
         }
 
     }

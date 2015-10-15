@@ -109,14 +109,14 @@ public class UserBD {
                     deleteMedicine(medicine);
                 }
             }
-        }
 
-        Collections.sort(medicineList, new Comparator<Medicine>() {
-            @Override
-            public int compare(Medicine o1, Medicine o2) {
-                return o1.getLeftMinutes() <= o2.getLeftMinutes()? -1 : 1;
-            }
-        });
+            Collections.sort(medicineList, new Comparator<Medicine>() {
+                @Override
+                public int compare(Medicine o1, Medicine o2) {
+                    return o1.getLeftMinutes() <= o2.getLeftMinutes()? -1 : 1;
+                }
+            });
+        }
 
         return medicineList;
     }
