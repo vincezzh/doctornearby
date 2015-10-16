@@ -3,6 +3,7 @@ package com.akhaltech.service;
 import com.akhaltech.constant.GlobalConstant;
 import com.akhaltech.util.PropertyUtil;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
 import org.apache.log4j.Logger;
 
@@ -15,20 +16,32 @@ public class BaseServiceImpl {
     protected MongoClient mongoClient;
 
     protected MongoDatabase initialize() {
+        boolean localTest = true;
+
         String dbServerURL = GlobalConstant.DB_SERVER_URL;
         int dbPort = GlobalConstant.DB_PORT;
         String dbName = GlobalConstant.DB_NAME;
+        String dbUser = "";
+        String dbPassword = "";
 
         try {
             PropertyUtil props = new PropertyUtil();
             dbServerURL = props.getProperty("mongodb.server.url");
             dbPort = Integer.parseInt(props.getProperty("mongodb.server.port"));
             dbName = props.getProperty("mongodb.database.name");
+            dbUser = props.getProperty("mongodb.server.dbuser");
+            dbPassword = props.getProperty("mongodb.server.dbpassword");
+            localTest = Boolean.parseBoolean(props.getProperty("mongodb.local.test"));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
 
-        mongoClient = new MongoClient(dbServerURL, dbPort);
+        if(localTest) {
+            mongoClient = new MongoClient(dbServerURL, dbPort);
+        }else {
+            MongoClientURI uri  = new MongoClientURI("mongodb://" + dbUser + ":" + dbPassword + "@" + dbServerURL + ":" + dbPort + "/" + dbName);
+            mongoClient = new MongoClient(uri);
+        }
         return mongoClient.getDatabase(dbName);
     }
 
