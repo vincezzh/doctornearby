@@ -92,6 +92,26 @@ public class UserController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/medicine/recentOne", method = RequestMethod.POST, produces = "application/json")
+    public RestResponse<Medicine> getUserrecentMedicine(@RequestBody User user) {
+        log.info("UserController.getUserrecentMedicine()");
+
+        try {
+            List<Medicine> medicineList = userBD.getMedicines(user.getMedicine().getUserId());
+            if(medicineList != null && medicineList.size() > 0) {
+                return new RestResponse<Medicine>(true, null, medicineList.get(0));
+            }else {
+                return new RestResponse<Medicine>(true, null, null);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getStackTrace());
+            return new RestResponse<Medicine>(false, e.getMessage(), null);
+        }
+
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/medicine/add", method = RequestMethod.POST, produces = "application/json")
     public RestResponse<String> addUserMedicine(@RequestBody User user) {
         log.info("UserController.addUserMedicine()");

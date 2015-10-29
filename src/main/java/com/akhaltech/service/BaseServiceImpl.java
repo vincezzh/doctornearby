@@ -37,7 +37,7 @@ public class BaseServiceImpl {
         }
 
         if(localTest) {
-            mongoClient = new MongoClient(dbServerURL, dbPort);
+            mongoClient = new MongoClient("localhost", 27017);
         }else {
             MongoClientURI uri  = new MongoClientURI("mongodb://" + dbUser + ":" + dbPassword + "@" + dbServerURL + ":" + dbPort + "/" + dbName);
             mongoClient = new MongoClient(uri);
