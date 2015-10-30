@@ -79,13 +79,13 @@ public class UserBD {
         }
 
         if(needToAdd)
-            userService.addBookmark(bookmark.getUserId(), bookmark.getDoctorId());
+            userService.addBookmark(bookmark.getUserId(), bookmark.getDoctorId(), bookmark.getProvince());
     }
 
     public void deleteBookmark(Bookmark bookmark) {
         log.info("UserBD.deleteBookmark()");
 
-        userService.deleteBookmark(bookmark.getUserId(), bookmark.getDoctorId());
+        userService.deleteBookmark(bookmark.getUserId(), bookmark.getDoctorId(), bookmark.getProvince());
     }
 
     public List<Medicine> getMedicines(String userId) throws Exception {

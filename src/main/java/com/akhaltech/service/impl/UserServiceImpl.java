@@ -79,14 +79,14 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
     }
 
     @Override
-    public void addBookmark(String userId, String doctorId) {
+    public void addBookmark(String userId, String doctorId, String province) {
         log.info("UserServiceImpl.addBookmark()");
         MongoDatabase db = initialize();
 
         try {
             MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_USER_BOOKMARK);
 
-            Document newBookmark = new Document("userId", userId).append("doctorId", doctorId);
+            Document newBookmark = new Document("userId", userId).append("doctorId", doctorId).append("province", province);
             collection.insertOne(newBookmark);
         }finally {
             close();
@@ -94,7 +94,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteBookmark(String userId, String doctorId) {
+    public void deleteBookmark(String userId, String doctorId, String province) {
         log.info("UserServiceImpl.deleteBookmark()");
         MongoDatabase db = initialize();
 
@@ -102,7 +102,8 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
             MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_USER_BOOKMARK);
             collection.deleteOne(and(
                     eq("userId", userId),
-                    eq("doctorId", doctorId)
+                    eq("doctorId", doctorId),
+                    eq("province", province)
             ));
         }finally {
             close();

@@ -6,6 +6,7 @@ package com.akhaltech.model;
 public class Bookmark extends Base {
     private String userId;
     private String doctorId;
+    private String province;
 
     public String getUserId() {
         return userId;
@@ -21,5 +22,13 @@ public class Bookmark extends Base {
 
     public void setDoctorId(String doctorId) {
         this.doctorId = doctorId;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
     }
 }

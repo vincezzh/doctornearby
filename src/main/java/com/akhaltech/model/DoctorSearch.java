@@ -22,6 +22,7 @@ public class DoctorSearch {
     private String physicianType;
     private String registrationStatus;
     private String location;
+    private String province;
     private String postcode;
     private String hospital;
     private int skip = 0;
@@ -32,6 +33,22 @@ public class DoctorSearch {
 
         if(doctorId != null) {
             Bson condition = eq("_id", doctorId);
+            conditionList.add(condition);
+        }
+        if(province != null && !"".equals(province.trim())) {
+            Bson condition = eq("province", province);
+            conditionList.add(condition);
+        }
+        if(location != null && !"".equals(location.trim())) {
+            Bson condition = eq("location.addressSummary", Pattern.compile(location, Pattern.CASE_INSENSITIVE));
+            conditionList.add(condition);
+        }
+        if(physicianType != null && !"".equals(physicianType.trim())) {
+            Bson condition = eq("specialtyList.name", Pattern.compile(physicianType, Pattern.CASE_INSENSITIVE));
+            conditionList.add(condition);
+        }
+        if(language != null && !"".equals(language.trim())) {
+            Bson condition = eq("profile.languageList", language);
             conditionList.add(condition);
         }
         if(name != null && !"".equals(name.trim())) {
@@ -45,20 +62,8 @@ public class DoctorSearch {
             Bson condition = eq("profile.gender", gender);
             conditionList.add(condition);
         }
-        if(language != null && !"".equals(language.trim())) {
-            Bson condition = eq("profile.languageList", language);
-            conditionList.add(condition);
-        }
-        if(physicianType != null && !"".equals(physicianType.trim())) {
-            Bson condition = eq("specialtyList.name", Pattern.compile(physicianType, Pattern.CASE_INSENSITIVE));
-            conditionList.add(condition);
-        }
         if(registrationStatus != null && !"".equals(registrationStatus.trim())) {
             Bson condition = eq("registration.registrationStatus", Pattern.compile(registrationStatus, Pattern.CASE_INSENSITIVE));
-            conditionList.add(condition);
-        }
-        if(location != null && !"".equals(location.trim())) {
-            Bson condition = eq("location.addressSummary", Pattern.compile(location, Pattern.CASE_INSENSITIVE));
             conditionList.add(condition);
         }
         if(postcode != null && !"".equals(postcode.trim())) {
@@ -163,5 +168,13 @@ public class DoctorSearch {
 
     public void setLimit(int limit) {
         this.limit = limit;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
     }
 }
