@@ -13,6 +13,7 @@ import org.bson.conversions.Bson;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -40,11 +41,13 @@ public class DoctorServiceImpl extends BaseServiceImpl implements DoctorService 
             List<String> sortingList = new ArrayList<String>();
             sortingList.add("profile.surname");
             sortingList.add("profile.givenName");
+            Date now = new Date();
             if(allConditions == null) {
                 cursor = collection.find().sort(ascending(sortingList)).skip(search.getSkip()).limit(search.getLimit()).iterator();
             }else {
                 cursor = collection.find(allConditions).sort(ascending(sortingList)).skip(search.getSkip()).limit(search.getLimit()).iterator();
             }
+            log.info("DoctorServiceImpl.search() -> " + (new Date().getTime() - now.getTime()) + "ms");
 
             List<String> doctorJsonList = null;
             if(cursor != null) {
