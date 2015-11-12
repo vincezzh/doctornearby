@@ -7,16 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.or;
 import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
 
 /**
  * Created by vince on 2015-09-15.
  */
 public class DoctorSearch {
     private String doctorId;
-    private String name;
+    private String surname;
+    private String givenname;
     private String gender;
     private String language;
     private String physicianType;
@@ -39,6 +39,14 @@ public class DoctorSearch {
             Bson condition = eq("province", province);
             conditionList.add(condition);
         }
+        if(surname != null && !"".equals(surname.trim())) {
+            Bson condition = eq("profile.surname", Pattern.compile(surname, Pattern.CASE_INSENSITIVE));
+            conditionList.add(condition);
+        }
+        if(givenname != null && !"".equals(givenname.trim())) {
+            Bson condition = eq("profile.givenName", Pattern.compile(givenname, Pattern.CASE_INSENSITIVE));
+            conditionList.add(condition);
+        }
         if(location != null && !"".equals(location.trim())) {
             Bson condition = eq("location.addressSummary", Pattern.compile(location, Pattern.CASE_INSENSITIVE));
             conditionList.add(condition);
@@ -49,13 +57,6 @@ public class DoctorSearch {
         }
         if(language != null && !"".equals(language.trim())) {
             Bson condition = eq("profile.languageList", language);
-            conditionList.add(condition);
-        }
-        if(name != null && !"".equals(name.trim())) {
-            Bson condition = or(
-                eq("profile.surname", Pattern.compile(name, Pattern.CASE_INSENSITIVE)),
-                eq("profile.givenName", Pattern.compile(name, Pattern.CASE_INSENSITIVE))
-            );
             conditionList.add(condition);
         }
         if(gender != null && !"".equals(gender.trim())) {
@@ -88,14 +89,6 @@ public class DoctorSearch {
 
     public void setDoctorId(String doctorId) {
         this.doctorId = doctorId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getGender() {
@@ -176,5 +169,21 @@ public class DoctorSearch {
 
     public void setProvince(String province) {
         this.province = province;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getGivenname() {
+        return givenname;
+    }
+
+    public void setGivenname(String givenname) {
+        this.givenname = givenname;
     }
 }

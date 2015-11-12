@@ -15,7 +15,5 @@ db.doctor.createIndex( { "profile.givenName": 1 } )
 db.doctor.createIndex( { "profile.gender": 1 } )
 db.doctor.createIndex( { "registration.registrationStatus": 1 } )
 db.doctor.createIndex( { "privilegeList.hospitalDetail": 1 } )
-
 db.user_medicine.createIndex( { "userId": 1 } )
-
 db.user_bookmark.createIndex( { "userId": 1 } )
