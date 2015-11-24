@@ -32,7 +32,7 @@ public class DoctorSearch {
         List<Bson> conditionList = new ArrayList<Bson>();
 
         if(doctorId != null) {
-            Bson condition = eq("_id", doctorId);
+            Bson condition = eq("profile.id", doctorId);
             conditionList.add(condition);
         }
         if(province != null && !"".equals(province.trim())) {
