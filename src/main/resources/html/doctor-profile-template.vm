@@ -71,7 +71,9 @@
                 <li>CPSO#: $doctor.profile.id</li>
                 <li>$doctor.location.addressSummary</li>
                 <li>$doctor.location.contactSummary</li>
-                <li>Former Name: $doctor.profile.formerName</li>
+                #if($doctor.profile.formerName)
+                    <li>Former Name: $doctor.profile.formerName</li>
+                #end
                 <li>Gender: $doctor.profile.gender</li>
                 <li>
                     Language Fluency:
@@ -79,8 +81,12 @@
                         $language
                     #end
                 </li>
-                <li>Corporation Name: $doctor.location.medicalLicensesInOtherJurisdictions</li>
-                <li>Certificate of Authorization Status: Issued Date: $doctor.location.corporationIssuedDate</li>
+                #if($doctor.location.medicalLicensesInOtherJurisdictions)
+                    <li>Corporation Name: $doctor.location.medicalLicensesInOtherJurisdictions</li>
+                #end
+                #if($doctor.location.corporationIssuedDate)
+                    <li>Certificate of Authorization Status: Issued Date: $doctor.location.corporationIssuedDate</li>
+                #end
             </ul>
             </p>
         </div>
@@ -108,7 +114,11 @@
                             #foreach ($specialty in $doctor.specialtyList)
                                 <tr>
                                     <td>$specialty.name</td>
-                                    <td>$specialty.issueOn</td>
+                                    <td>
+                                        #if($specialty.issueOn)
+                                            $specialty.issueOn
+                                        #end
+                                    </td>
                                     <td>$specialty.type</td>
                                 </tr>
                             #end
@@ -117,22 +127,25 @@
                 </div>
             </div>
 
-            <div class="col-sm-6">
-                <h2 class="skillh2">Hospital Privileges</h2>
-                <div class="row">
-                    <div class="col-md-12 skilltitle">
-                        <ul>
-                            #foreach ($privilege in $doctor.privilegeList)
-                                <li>$privilege.hospitalDetail</li>
-                            #end
-                        </ul>
+            #if($doctor.privilegeList)
+                <div class="col-sm-6">
+                    <h2 class="skillh2">Hospital Privileges</h2>
+                    <div class="row">
+                        <div class="col-md-12 skilltitle">
+                            <ul>
+                                #foreach ($privilege in $doctor.privilegeList)
+                                    <li>$privilege.hospitalDetail</li>
+                                #end
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
+            #end
         </div>
     </div>
 </section>
 
+#if($doctor.registration.trainingList && $doctor.registration.trainingList.size() > 0)
 <!--Postgraduate Training-->
 <section id="postgraduateTraining" class="secPad white">
     <div class="container">
@@ -173,9 +186,22 @@
                                     <ul class="timeline-panel-ul">
                                         <li>&nbsp;</li>
                                         <li>&nbsp;</li>
-                                        <li><span class="importo">$training.medicalSchool</span></li>
-                                        <li><span class="causale">$training.discipline, $training.type</span> </li>
-                                        <li><p><small class="text-muted">$training.from - $training.to</small></p> </li>
+                                        #if($training.medicalSchool)
+                                            <li><span class="importo">$training.medicalSchool</span></li>
+                                        #end
+                                        <li>
+                                            <span class="causale">
+                                                #if($training.discipline)
+                                                    $training.discipline,
+                                                #end
+                                                #if($training.type)
+                                                    $training.type
+                                                #end
+                                            </span>
+                                        </li>
+                                        #if($training.from)
+                                            <li><p><small class="text-muted">$training.from - $training.to</small></p></li>
+                                        #end
                                     </ul>
                                 </div>
 
@@ -187,7 +213,9 @@
         </div>
     </div>
 </section>
+#end
 
+#if($doctor.registration.historyList && $doctor.registration.historyList.size() > 0)
 <!--Registration History-->
 <section id="registrationHistory" class="secPad">
     <div class="container">
@@ -226,7 +254,11 @@
                                 <div class="timeline-panel $creditsOrDebits">
                                     <ul class="timeline-panel-ul">
                                         <li>&nbsp;</li>
-                                        <li><p><small class="text-muted">$history.effectiveDate</small></p> </li>
+                                        #if($history.effectiveDate)
+                                            <li><p><small class="text-muted">$history.effectiveDate</small></p> </li>
+                                        #else
+                                            <li>&nbsp;</li>
+                                        #end
                                         <li><span class="importo">$history.description</span></li>
                                     </ul>
                                 </div>
@@ -239,6 +271,7 @@
         </div>
     </div>
 </section>
+#end
 
 <!--/.page-section-->
 <section class="copyright">
