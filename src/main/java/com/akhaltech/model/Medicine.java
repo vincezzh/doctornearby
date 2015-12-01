@@ -20,6 +20,9 @@ public class Medicine extends Base {
 
         if(now.compareTo(startTimeDate) == -1) {
             leftMinutes = (int) ((startTimeDate.getTime() - now.getTime()) / 1000 / 60);
+            if(leftMinutes == 0) {
+                leftMinutes = 1;
+            }
         }else {
             if (periodMinutes > 0) {
                 Calendar c = Calendar.getInstance();

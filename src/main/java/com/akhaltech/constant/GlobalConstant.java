@@ -8,6 +8,10 @@ import java.util.Map;
  */
 public class GlobalConstant {
 
+    public static final String TYPE_DEV = "DEV";
+    public static final String TYPE_PROD = "PROD";
+    public static final int NOTIFICATION_PERIOD_MINUTES = 10;
+
     public static final Map<String, String> PROVINCE_NAME_MAP = new HashMap<String, String>() {
         {
             put("Alberta", "AB");

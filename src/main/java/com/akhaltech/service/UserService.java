@@ -17,5 +17,6 @@ public interface UserService {
     List<String> getMedicines(String userId);
     void addMedicine(Medicine medicine);
     void deleteMedicine(Medicine medicine);
+    List<String> getMedicines();
 
 }

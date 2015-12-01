@@ -25,4 +25,11 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>MedicineNotificationSchedulerServlet</servlet-name>
+        <servlet-class>com.akhaltech.startup.MedicineNotificationSchedulerServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
 </web-app>

@@ -173,4 +173,35 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
             close();
         }
     }
+
+    @Override
+    public List<String> getMedicines() {
+        log.info("UserServiceImpl.getMedicines()");
+        MongoDatabase db = initialize();
+
+        try {
+            MongoCollection<Document> collection = db.getCollection(GlobalConstant.COLLECTION_USER_MEDICINE);
+            List<String> sortingList = new ArrayList<String>();
+            sortingList.add("createdTime");
+            MongoCursor<Document> cursor = collection.find().sort(ascending(sortingList)).iterator();
+
+            List<String> medicineJsonList = null;
+            if(cursor != null) {
+                try {
+                    while (cursor.hasNext()) {
+                        if(medicineJsonList == null)
+                            medicineJsonList = new ArrayList<String>();
+
+                        medicineJsonList.add(cursor.next().toJson());
+                    }
+                }finally {
+                    cursor.close();
+                }
+            }
+
+            return medicineJsonList;
+        }finally {
+            close();
+        }
+    }
 }
