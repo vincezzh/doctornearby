@@ -29,12 +29,6 @@ public class MedicineScheduledTask extends TimerTask {
         try {
             log.info("MedicineScheduledTask: run()");
 
-            Date toTime = new Date();
-            Calendar c = Calendar.getInstance();
-            c.setTime(toTime);
-            c.add(Calendar.MINUTE, GlobalConstant.NOTIFICATION_PERIOD_MINUTES);
-            Date fromTime = c.getTime();
-
             List<String> medicineJSonList = userService.getMedicines();
             List<Medicine> medicineList = null;
             if (medicineJSonList != null && medicineJSonList.size() > 0) {
@@ -56,16 +50,18 @@ public class MedicineScheduledTask extends TimerTask {
                     }else if(medicine.getLeftMinutes() > GlobalConstant.NOTIFICATION_PERIOD_MINUTES) {
                         i.remove();
                     }else {
-                        if(notificationMap.get(medicine.getUserId()) == null) {
-                            Notification notification = new Notification();
-                            notification.setToken(medicine.getUserId());
-                            notificationMap.put(medicine.getUserId(), notification);
-                        }
+                        if(medicine.getDeviceToken() != null) {
+                            if (notificationMap.get(medicine.getDeviceToken()) == null) {
+                                Notification notification = new Notification();
+                                notification.setToken(medicine.getDeviceToken());
+                                notificationMap.put(medicine.getDeviceToken(), notification);
+                            }
 
-                        if(notificationMap.get(medicine.getUserId()).getMessage() == null) {
-                            notificationMap.get(medicine.getUserId()).setMessage("Please eat/apply the following medicine(s) in " + GlobalConstant.NOTIFICATION_PERIOD_MINUTES + " minutes: " + medicine.getName());
-                        }else {
-                            notificationMap.get(medicine.getUserId()).setMessage(notificationMap.get(medicine.getUserId()).getMessage() + ", " + medicine.getName());
+                            if (notificationMap.get(medicine.getDeviceToken()).getMessage() == null) {
+                                notificationMap.get(medicine.getDeviceToken()).setMessage("Please eat/apply the following medicine(s) in " + GlobalConstant.NOTIFICATION_PERIOD_MINUTES + " minutes: " + medicine.getName());
+                            } else {
+                                notificationMap.get(medicine.getDeviceToken()).setMessage(notificationMap.get(medicine.getDeviceToken()).getMessage() + ", " + medicine.getName());
+                            }
                         }
                     }
                 }

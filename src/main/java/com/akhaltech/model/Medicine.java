@@ -12,6 +12,7 @@ public class Medicine extends Base {
     private int periodMinutes;
     private String startTime;
     private int leftMinutes;
+    private String deviceToken;
 
     public int getLeftMinutes() {
         leftMinutes = 0;
@@ -71,5 +72,13 @@ public class Medicine extends Base {
 
     public void setStartTime(String startTime) {
         this.startTime = startTime;
+    }
+
+    public String getDeviceToken() {
+        return deviceToken;
+    }
+
+    public void setDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
     }
 }
