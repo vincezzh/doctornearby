@@ -34,6 +34,7 @@ public class BaseServiceImpl {
             localTest = Boolean.parseBoolean(props.getProperty("mongodb.local.test"));
         } catch (Exception e) {
             log.error(e.getMessage());
+            e.printStackTrace();
         }
 
         if(localTest) {
