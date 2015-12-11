@@ -67,8 +67,9 @@ public class MedicineScheduledTask extends TimerTask {
                 }
 
                 if(notificationMap.values() != null && notificationMap.values().size() > 0) {
+                    NotificationUtil notificationUtil = new NotificationUtil();
                     for(Notification n : notificationMap.values()) {
-                        NotificationUtil.pushNotification(n);
+                        notificationUtil.pushNotification(n);
                     }
                 }
             }

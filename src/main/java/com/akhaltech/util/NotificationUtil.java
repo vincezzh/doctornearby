@@ -14,10 +14,7 @@ public class NotificationUtil {
 
     private final static Logger log = Logger.getLogger(NotificationUtil.class);
 
-    public static void pushNotification(Notification notification) {
-
-        //7E8CF91DCEDADB25F64BF8A016E69FA044567E21E68CE874A191501F3A070AFF
-
+    public void pushNotification(Notification notification) {
         String token = notification.getToken();
         String message = notification.getMessage();
         PropertyUtil props = new PropertyUtil();
@@ -26,10 +23,10 @@ public class NotificationUtil {
         ApnsServiceBuilder serviceBuilder = APNS.newService();
 
         if (GlobalConstant.TYPE_PROD.equals(type)) {
-            String certPath = NotificationUtil.class.getResource("prod_cert.p12").getPath();
+            String certPath = getClass().getClassLoader().getResource("prod_cert.p12").getPath();
             serviceBuilder.withCert(certPath, p12Password).withProductionDestination();
         } else if (GlobalConstant.TYPE_DEV.equals(type)) {
-            String certPath = NotificationUtil.class.getResource("dev_cert.p12").getPath();
+            String certPath = getClass().getClassLoader().getResource("dev_cert.p12").getPath();
             serviceBuilder.withCert(certPath, p12Password).withSandboxDestination();
         } else {
             log.error("unknown API type " + type);
