@@ -152,7 +152,8 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
             Document newBookmark = new Document("userId", medicine.getUserId())
                     .append("name", medicine.getName())
                     .append("periodMinutes", medicine.getPeriodMinutes())
-                    .append("startTime", medicine.getStartTime());
+                    .append("startTime", medicine.getStartTime())
+                    .append("deviceToken", medicine.getDeviceToken());
             collection.insertOne(newBookmark);
         }finally {
             close();
