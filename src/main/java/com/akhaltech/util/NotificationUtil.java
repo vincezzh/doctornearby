@@ -16,6 +16,8 @@ public class NotificationUtil {
 
     public static void pushNotification(Notification notification) {
 
+        //7E8CF91DCEDADB25F64BF8A016E69FA044567E21E68CE874A191501F3A070AFF
+
         String token = notification.getToken();
         String message = notification.getMessage();
         PropertyUtil props = new PropertyUtil();
@@ -39,16 +41,7 @@ public class NotificationUtil {
         String payload = APNS.newPayload()
                 .alertBody(message)
                 .alertTitle("Medicine Reminder")
-                .sound("default")
-                .customField("custom", "custom value").build();
-
-        ////Payload with custom fields
-        //String payload = APNS.newPayload()
-        //        .alertBody(message).build();
-
-        ////String payload example:
-        //String payload = "{\"aps\":{\"alert\":{\"title\":\"My Title 1\",\"body\":\"My message 1\",\"category\":\"Personal\"}}}";
-
+                .sound("default").build();
 
         log.info("payload: " + payload);
         service.push(token, payload);
