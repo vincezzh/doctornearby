@@ -47,7 +47,7 @@ public class DoctorController {
     @ResponseBody
     @RequestMapping(value = "/{id}/detail", method = RequestMethod.GET, produces = "application/json")
     public RestResponse<Doctor> getDoctor(@PathVariable("id") String id) {
-        log.info("DoctorController.getRecipe()");
+        log.info("DoctorController.getDoctor()");
 
         try {
             Doctor doctor = doctorBD.getDoctorById(id);
@@ -63,7 +63,7 @@ public class DoctorController {
     @ResponseBody
     @RequestMapping(value = "/{id}/profile", method = RequestMethod.GET, produces = "application/json")
     public RestResponse<HTMLTemplate> getDoctorProfile(@PathVariable("id") String id) {
-        log.info("DoctorController.getRecipe()");
+        log.info("DoctorController.getDoctorProfile()");
 
         try {
             Doctor doctor = doctorBD.getDoctorById(id);

@@ -83,6 +83,74 @@ public class DoctorSearch {
         return allCondition;
     }
 
+    public String getSearchConditionsSQL() {
+        List<String> conditionList = new ArrayList<String>();
+
+        if(doctorId != null) {
+            String sql = "select d._id from doctor d where d._id='" + doctorId + "'";
+            conditionList.add(sql);
+        }
+        if(province != null && !"".equals(province.trim())) {
+            String sql = "select d._id from doctor d where d.province='" + province.trim() + "'";
+            conditionList.add(sql);
+        }
+        if(surname != null && !"".equals(surname.trim())) {
+            String sql = "select d._id from doctor d left join profile p on p.id=d.profile_id where p.surname like ('" + surname.trim() + "%')";
+            conditionList.add(sql);
+        }
+        if(givenname != null && !"".equals(givenname.trim())) {
+            String sql = "select d._id from doctor d left join profile p on p.id=d.profile_id where p.given_name like ('" + givenname.trim() + "%')";
+            conditionList.add(sql);
+        }
+        if(location != null && !"".equals(location.trim())) {
+            String sql = "select d._id from doctor d left join location l on l.id=d.location_id where l.address_summary like ('%" + location.trim() + "%')";
+            conditionList.add(sql);
+        }
+        if(physicianType != null && !"".equals(physicianType.trim())) {
+            String sql = "select d._id from doctor d left join specialty s on s.doctor_id=d._id where s.name like ('" + physicianType.trim() + "%')";
+            conditionList.add(sql);
+        }
+        if(language != null && !"".equals(language.trim())) {
+            String sql = "select d._id from doctor d left join profile p on p.id=d.profile_id left join language l on l.profile_id=p.id where l.language = '" + language.trim() + "'";
+            conditionList.add(sql);
+        }
+        if(gender != null && !"".equals(gender.trim())) {
+            String sql = "select d._id from doctor d left join profile p on p.id=d.profile_id where p.gender='" + gender.trim() + "'";
+            conditionList.add(sql);
+        }
+        if(registrationStatus != null && !"".equals(registrationStatus.trim())) {
+            String sql = "select d._id from doctor d left join registration r on r.id=d.registration_id where r.registration_status like ('" + registrationStatus.trim() + "%')";
+            conditionList.add(sql);
+        }
+        if(postcode != null && !"".equals(postcode.trim())) {
+            String sql = "select d._id from doctor d left join location l on l.id=d.location_id where l.address_summary like ('%" + postcode.trim() + "%')";
+            conditionList.add(sql);
+        }
+        if(hospital != null && !"".equals(hospital.trim())) {
+            String sql = "select d._id from doctor d left join privilege p on p.doctor_id=d._id where p.hospital_detail like ('%" + hospital.trim() + "%')";
+            conditionList.add(sql);
+        }
+
+        StringBuffer allCondition = new StringBuffer(" ( ");
+        for(int i=0; i<conditionList.size(); i++) {
+            String currentAlian = "table" + i;
+            String previousAlian = "table" + (i-1);
+
+            if(i == 0) {
+                allCondition.append(" select " + currentAlian + "._id from ( ");
+                allCondition.append(" " + conditionList.get(i) + " ");
+                allCondition.append(" ) " + currentAlian + " ");
+            }else {
+                allCondition.append(" inner join ( ");
+                allCondition.append(" " + conditionList.get(i) + " ");
+                allCondition.append(" ) " + currentAlian + " on " + currentAlian + "._id=" + previousAlian + "._id ");
+            }
+        }
+        allCondition.append(" ) ");
+
+        return allCondition.toString();
+    }
+
     public String getDoctorId() {
         return doctorId;
     }

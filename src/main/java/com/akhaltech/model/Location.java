@@ -4,7 +4,7 @@ package com.akhaltech.model;
  * Created by vince on 2015-09-08.
  */
 public class Location {
-
+    private Long id;
     private String addressSummary;
     private String contactSummary;
     private String electoralDistrict;
@@ -58,5 +58,13 @@ public class Location {
 
     public void setMedicalLicensesInOtherJurisdictions(String medicalLicensesInOtherJurisdictions) {
         this.medicalLicensesInOtherJurisdictions = medicalLicensesInOtherJurisdictions;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

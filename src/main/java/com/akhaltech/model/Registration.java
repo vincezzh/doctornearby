@@ -6,6 +6,7 @@ import java.util.List;
  * Created by vince on 2015-09-08.
  */
 public class Registration {
+    private Long id;
     private String registrationClass;
     private String certificateIssued;
     private String registrationStatus;
@@ -95,5 +96,13 @@ public class Registration {
 
     public void setTermsAndConditions(String termsAndConditions) {
         this.termsAndConditions = termsAndConditions;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

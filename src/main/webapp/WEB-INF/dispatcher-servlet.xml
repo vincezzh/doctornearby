@@ -12,6 +12,9 @@
     <mvc:annotation-driven/>
 
     <context:component-scan base-package="com.akhaltech" annotation-config="true"/>
+    <context:property-placeholder location="classpath*:config.properties"/>
+
+    <import resource="classpath:datasource.xml"/>
 
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.InternalResourceViewResolver"

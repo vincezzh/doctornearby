@@ -6,18 +6,18 @@ import java.util.List;
  * Created by vince on 2015-09-08.
  */
 public class Profile {
-    private String id;
+    private Long id;
     private String givenName;
     private String surname;
     private String formerName;
     private String gender;
     private List<String> languageList;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

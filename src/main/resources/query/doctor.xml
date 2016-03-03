@@ -1,0 +1,42 @@
+<querys>
+    <query id="search">
+        select d._id, p.surname, p.given_name, l.address_summary, l.contact_summary from doctor d left join profile p on p.id=d.profile_id left join location l on l.id = d.location_id where d._id in
+    </query>
+
+    <query id="getDoctorByDoctorId">
+        select * from doctor where _id = ?
+    </query>
+
+    <query id="getPrivilegeByDoctorId">
+        select * from privilege where doctor_id = ?
+    </query>
+
+    <query id="getSpecialtyByDoctorId">
+        select * from specialty where doctor_id = ?
+    </query>
+
+    <query id="getProfileByProfileId">
+        select * from profile where id = ?
+    </query>
+
+    <query id="getLanguageByProfileId">
+        select * from language where profile_id = ?
+    </query>
+
+    <query id="getLocationByLocationId">
+        select * from location where id = ?
+    </query>
+
+    <query id="getRegistrationByRegistrationId">
+        select * from registration where id = ?
+    </query>
+
+    <query id="getRegistrationHistoryByRegistrationId">
+        select * from registration_history where registration_id = ?
+    </query>
+
+    <query id="getPostgraduateTrainingByRegistrationId">
+        select * from postgraduate_training where registration_id = ?
+    </query>
+
+</querys>

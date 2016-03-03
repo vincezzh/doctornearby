@@ -1,6 +1,7 @@
 package com.akhaltech.business;
 
 import com.akhaltech.constant.GlobalConstant;
+import com.akhaltech.dao.DoctorDAO;
 import com.akhaltech.model.Doctor;
 import com.akhaltech.model.DoctorSearch;
 import com.akhaltech.model.HTMLTemplate;
@@ -29,19 +30,23 @@ public class DoctorBD {
     private DoctorService doctorService;
 
     @Autowired
+    private DoctorDAO doctorDAO;
+
+    @Autowired
     private final VelocityEngine velocityEngine = null;
 
     public List<Doctor> search(DoctorSearch search) throws Exception {
         log.info("DoctorBD.search()");
 
-        List<String> doctorJSonList = doctorService.search(search);
-        List<Doctor> doctorList = null;
-        if(doctorJSonList != null && doctorJSonList.size() > 0) {
-            doctorList = new ArrayList<Doctor>();
-            for(String doctorJson : doctorJSonList) {
-                doctorList.add(mapper.readValue(doctorJson, Doctor.class));
-            }
-        }
+//        List<String> doctorJSonList = doctorService.search(search);
+//        List<Doctor> doctorList = null;
+//        if(doctorJSonList != null && doctorJSonList.size() > 0) {
+//            doctorList = new ArrayList<Doctor>();
+//            for(String doctorJson : doctorJSonList) {
+//                doctorList.add(mapper.readValue(doctorJson, Doctor.class));
+//            }
+//        }
+        List<Doctor> doctorList = doctorDAO.search(search);
 
         return doctorList;
     }
@@ -49,10 +54,12 @@ public class DoctorBD {
     public Doctor getDoctorById(String id) throws Exception {
         log.info("DoctorBD.getDoctorById()");
 
-        String doctorJson = doctorService.getDoctorById(id);
-        Doctor doctor = null;
-        if(doctorJson != null)
-            doctor = mapper.readValue(doctorJson, Doctor.class);
+//        String doctorJson = doctorService.getDoctorById(id);
+//        Doctor doctor = null;
+//        if(doctorJson != null)
+//            doctor = mapper.readValue(doctorJson, Doctor.class);
+
+        Doctor doctor = doctorDAO.getDoctorById(id);
 
         return doctor;
     }
