@@ -60,4 +60,5 @@ public class Profile {
     public void setLanguageList(List<String> languageList) {
         this.languageList = languageList;
     }
+
 }

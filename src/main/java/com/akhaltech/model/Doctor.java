@@ -7,6 +7,7 @@ import java.util.List;
  */
 public class Doctor {
     private String _id;
+    private String doctorId;
     private String status;
     private String province;
     private String country;
@@ -86,5 +87,13 @@ public class Doctor {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(String doctorId) {
+        this.doctorId = doctorId;
     }
 }

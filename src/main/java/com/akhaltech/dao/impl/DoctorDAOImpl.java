@@ -32,7 +32,7 @@ public class DoctorDAOImpl extends NamedParameterJdbcDaoSupport implements Docto
     @Override
     public List<Doctor> search(DoctorSearch search) {
         log.info("DoctorDAOImpl: search() ----> Start");
-        final String sql = QueryUtil.getQuery("doctor", "search") + search.getSearchConditionsSQL() + " LIMIT ?, ?";
+        final String sql = QueryUtil.getQuery("doctor", "search") + search.getSearchConditionsSQL() + " ORDER BY p.surname ASC LIMIT ?, ?";
         log.info(sql);
         List<Doctor> doctorList = getJdbcTemplate().query(sql, new SimpleDoctorRowMapper(), search.getSkip(), search.getLimit());
         log.info("DoctorDAOImpl: search() ----> End");
@@ -54,7 +54,7 @@ public class DoctorDAOImpl extends NamedParameterJdbcDaoSupport implements Docto
             }
         }
         conditionSB.append(" ) ");
-        final String sql = QueryUtil.getQuery("doctor", "getSimpleDoctors") + conditionSB.toString();
+        final String sql = QueryUtil.getQuery("doctor", "getSimpleDoctors") + conditionSB.toString() + " ORDER BY p.surname ASC";
         List<Doctor> doctorList = getJdbcTemplate().query(sql, new SimpleDoctorRowMapper());
         return doctorList;
     }
@@ -259,6 +259,8 @@ class SimpleDoctorRowMapper implements RowMapper<Doctor> {
     public Doctor mapRow(ResultSet rs, int row) throws SQLException {
         Doctor doctor = new Doctor();
         doctor.set_id(rs.getString("_id"));
+        String doctorId = rs.getString("_id");
+        doctor.setDoctorId(doctorId.substring(doctorId.indexOf("_") + 1));
         doctor.setProvince(rs.getString("province"));
 
         Profile profile = new Profile();
@@ -279,6 +281,8 @@ class DoctorRowMapper implements RowMapper<Doctor> {
     public Doctor mapRow(ResultSet rs, int row) throws SQLException {
         Doctor doctor = new Doctor();
         doctor.set_id(rs.getString("_id"));
+        String doctorId = rs.getString("_id");
+        doctor.setDoctorId(doctorId.substring(doctorId.indexOf("_") + 1));
         doctor.setStatus(rs.getString("status"));
         doctor.setProvince(rs.getString("province"));
         doctor.setCountry(rs.getString("country"));
