@@ -4,6 +4,7 @@ import com.akhaltech.dao.DoctorDAO;
 import com.akhaltech.model.*;
 import com.akhaltech.util.QueryUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
@@ -20,6 +21,8 @@ import java.util.List;
 @Repository
 public class DoctorDAOImpl extends NamedParameterJdbcDaoSupport implements DoctorDAO {
 
+    private final static Logger log = Logger.getLogger(DoctorDAOImpl.class);
+
     @Autowired
     public DoctorDAOImpl(DataSource dataSource) {
         super();
@@ -28,8 +31,11 @@ public class DoctorDAOImpl extends NamedParameterJdbcDaoSupport implements Docto
 
     @Override
     public List<Doctor> search(DoctorSearch search) {
+        log.info("DoctorDAOImpl: search() ----> Start");
         final String sql = QueryUtil.getQuery("doctor", "search") + search.getSearchConditionsSQL() + " LIMIT ?, ?";
+        log.info(sql);
         List<Doctor> doctorList = getJdbcTemplate().query(sql, new SimpleDoctorRowMapper(), search.getSkip(), search.getLimit());
+        log.info("DoctorDAOImpl: search() ----> End");
         return doctorList;
     }
 

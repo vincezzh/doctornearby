@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.net.URL;
 import java.util.*;
 
 /**
