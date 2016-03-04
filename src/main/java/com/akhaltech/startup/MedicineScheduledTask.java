@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -30,7 +31,7 @@ public class MedicineScheduledTask extends TimerTask {
         try {
             log.info("MedicineScheduledTask: run()");
 
-            ApplicationContext context = new ClassPathXmlApplicationContext("../dispatcher-servlet.xml");
+            ApplicationContext context = new ClassPathXmlApplicationContext("scheduler.xml");
             UserDAOSchedulerImpl userDAO = (UserDAOSchedulerImpl) context.getBean("userDAOScheduler");
 
 //            List<String> medicineJSonList = userService.getMedicines();
