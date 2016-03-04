@@ -146,7 +146,7 @@ public class DoctorSearch {
                 allCondition.append(" ) " + currentAlian + " on " + currentAlian + "._id=" + previousAlian + "._id ");
             }
         }
-        allCondition.append(" ) ");
+        allCondition.append(" ) zz ");
 
         return allCondition.toString();
     }

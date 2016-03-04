@@ -32,7 +32,7 @@ public class DoctorDAOImpl extends NamedParameterJdbcDaoSupport implements Docto
     @Override
     public List<Doctor> search(DoctorSearch search) {
         log.info("DoctorDAOImpl: search() ----> Start");
-        final String sql = QueryUtil.getQuery("doctor", "search") + search.getSearchConditionsSQL() + " ORDER BY p.surname ASC LIMIT ?, ?";
+        final String sql = QueryUtil.getQuery("doctor", "search") + search.getSearchConditionsSQL() + " ON zz._id=d._id ORDER BY p.surname ASC LIMIT ?, ?";
         log.info(sql);
         List<Doctor> doctorList = getJdbcTemplate().query(sql, new SimpleDoctorRowMapper(), search.getSkip(), search.getLimit());
         log.info("DoctorDAOImpl: search() ----> End");
