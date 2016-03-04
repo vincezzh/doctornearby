@@ -30,4 +30,8 @@
         </property>
     </bean>
 
+    <bean id="userDAOScheduler" class="com.akhaltech.dao.impl.UserDAOSchedulerImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
 </beans>

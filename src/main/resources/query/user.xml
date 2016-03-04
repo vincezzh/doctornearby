@@ -22,6 +22,9 @@
         select * from medicine where delete_ts is null and user_id = ? order by id asc
     </query>
 
+    <query id="getAllMedicines">
+        select * from medicine where delete_ts is null order by id asc
+    </query>
 
     <query id="addMedicine">
         INSERT INTO medicine (user_id, name, period_minutes, start_time, device_token)

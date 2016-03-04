@@ -108,7 +108,10 @@ public class UserDAOImpl extends NamedParameterJdbcDaoSupport implements UserDAO
 
     @Override
     public List<Medicine> getMedicines() {
-        return null;
+        final String sql = QueryUtil.getQuery("user", "getAllMedicines");
+        List<Medicine> medicineList = getJdbcTemplate().query(sql, new MedicineRowMapper());
+
+        return medicineList;
     }
 
 }
