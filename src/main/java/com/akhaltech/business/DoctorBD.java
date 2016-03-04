@@ -5,7 +5,6 @@ import com.akhaltech.dao.DoctorDAO;
 import com.akhaltech.model.Doctor;
 import com.akhaltech.model.DoctorSearch;
 import com.akhaltech.model.HTMLTemplate;
-import com.akhaltech.service.DoctorService;
 import com.akhaltech.util.PropertyUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
@@ -15,7 +14,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Created by vince on 2015-09-15.
@@ -26,8 +28,8 @@ public class DoctorBD {
     private final static Logger log = Logger.getLogger(DoctorBD.class);
     private ObjectMapper mapper = new ObjectMapper();
 
-    @Autowired
-    private DoctorService doctorService;
+//    @Autowired
+//    private DoctorService doctorService;
 
     @Autowired
     private DoctorDAO doctorDAO;

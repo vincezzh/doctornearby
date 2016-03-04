@@ -1,0 +1,37 @@
+<querys>
+    <query id="getBookmark">
+        select * from bookmark where delete_ts is null and user_id = ? and doctor_id = ?
+    </query>
+
+    <query id="getBookmarks">
+        select * from bookmark where delete_ts is null and user_id = ?
+    </query>
+
+    <query id="addBookmark">
+        INSERT INTO bookmark (user_id, doctor_id, province)
+            VALUES (?, ?, ?)
+    </query>
+
+    <query id="deleteBookmark">
+        UPDATE bookmark
+            SET delete_ts = now()
+            WHERE user_id = ? and doctor_id = ?, province = ?
+    </query>
+
+    <query id="getMedicines">
+        select * from medicine where delete_ts is null and user_id = ? order by id asc
+    </query>
+
+
+    <query id="addMedicine">
+        INSERT INTO medicine (user_id, name, period_minutes, start_time, device_token)
+            VALUES (?, ?, ?, ?, ?)
+    </query>
+
+    <query id="deleteMedicine">
+        UPDATE medicine
+            SET delete_ts = now()
+            WHERE id = ?
+    </query>
+
+</querys>

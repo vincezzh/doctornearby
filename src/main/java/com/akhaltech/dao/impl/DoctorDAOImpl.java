@@ -28,14 +28,29 @@ public class DoctorDAOImpl extends NamedParameterJdbcDaoSupport implements Docto
 
     @Override
     public List<Doctor> search(DoctorSearch search) {
-        final String sql = QueryUtil.getQuery("doctor", "search") + search.getSearchConditionsSQL();
-        List<Doctor> doctorList = getJdbcTemplate().query(sql, new SimpleDoctorRowMapper());
+        final String sql = QueryUtil.getQuery("doctor", "search") + search.getSearchConditionsSQL() + " LIMIT ?, ?";
+        List<Doctor> doctorList = getJdbcTemplate().query(sql, new SimpleDoctorRowMapper(), search.getSkip(), search.getLimit());
         return doctorList;
     }
 
     @Override
     public List<Doctor> getDoctors(List<String> idList) {
-        return null;
+        StringBuffer conditionSB = new StringBuffer();
+        for(String id : idList) {
+            if(conditionSB.length() == 0) {
+                conditionSB.append(" ('");
+                conditionSB.append(id);
+                conditionSB.append("' ");
+            }else {
+                conditionSB.append(", '");
+                conditionSB.append(id);
+                conditionSB.append("' ");
+            }
+        }
+        conditionSB.append(" ) ");
+        final String sql = QueryUtil.getQuery("doctor", "getSimpleDoctors") + conditionSB.toString();
+        List<Doctor> doctorList = getJdbcTemplate().query(sql, new SimpleDoctorRowMapper());
+        return doctorList;
     }
 
     @Override
@@ -238,6 +253,7 @@ class SimpleDoctorRowMapper implements RowMapper<Doctor> {
     public Doctor mapRow(ResultSet rs, int row) throws SQLException {
         Doctor doctor = new Doctor();
         doctor.set_id(rs.getString("_id"));
+        doctor.setProvince(rs.getString("province"));
 
         Profile profile = new Profile();
         profile.setSurname(rs.getString("surname"));
