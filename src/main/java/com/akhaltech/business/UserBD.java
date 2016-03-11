@@ -5,7 +5,6 @@ import com.akhaltech.dao.UserDAO;
 import com.akhaltech.model.Bookmark;
 import com.akhaltech.model.Doctor;
 import com.akhaltech.model.Medicine;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,12 +18,6 @@ import java.util.*;
 public class UserBD {
 
     private final static Logger log = Logger.getLogger(UserBD.class);
-    private ObjectMapper mapper = new ObjectMapper();
-
-//    @Autowired
-//    private UserService userService;
-//    @Autowired
-//    private DoctorService doctorService;
 
     @Autowired
     private UserDAO userDAO;
@@ -42,15 +35,6 @@ public class UserBD {
             for(Bookmark tempBookmark : bookmarkList) {
                 doctorIdList.add(tempBookmark.getDoctorId());
             }
-
-//            List<String> doctorJSonList = doctorService.getDoctors(doctorIdList);
-//            if (doctorJSonList != null && doctorJSonList.size() > 0) {
-//                doctorList = new ArrayList<Doctor>();
-//                for (String doctorJson : doctorJSonList) {
-//                    doctorList.add(mapper.readValue(doctorJson, Doctor.class));
-//                }
-//            }
-
             doctorList = doctorDAO.getDoctors(doctorIdList);
         }
 
@@ -59,16 +43,6 @@ public class UserBD {
 
     public List<Bookmark> getBookmarks(String userId) throws Exception {
         log.info("UserBD.getBookmarks()");
-
-//        List<String> bookmarkJSonList = userService.getBookmarks(userId);
-//        List<Bookmark> bookmarkList = null;
-//        if(bookmarkJSonList != null && bookmarkJSonList.size() > 0) {
-//            bookmarkList = new ArrayList<Bookmark>();
-//            for(String bookmarkJSon : bookmarkJSonList) {
-//                bookmarkList.add(mapper.readValue(bookmarkJSon, Bookmark.class));
-//            }
-//        }
-
         List<Bookmark> bookmarkList = userDAO.getBookmarks(userId);
 
         return bookmarkList;
@@ -89,29 +63,17 @@ public class UserBD {
         }
 
         if(needToAdd) {
-//            userService.addBookmark(bookmark.getUserId(), bookmark.getDoctorId(), bookmark.getProvince());
             userDAO.addBookmark(bookmark.getUserId(), bookmark.getDoctorId(), bookmark.getProvince());
         }
     }
 
     public void deleteBookmark(Bookmark bookmark) {
         log.info("UserBD.deleteBookmark()");
-
-//        userService.deleteBookmark(bookmark.getUserId(), bookmark.getDoctorId(), bookmark.getProvince());
         userDAO.deleteBookmark(bookmark.getUserId(), bookmark.getDoctorId(), bookmark.getProvince());
     }
 
     public List<Medicine> getMedicines(String userId) throws Exception {
         log.info("UserBD.getMedicines()");
-
-//        List<String> medicineJSonList = userService.getMedicines(userId);
-//        List<Medicine> medicineList = null;
-//        if(medicineJSonList != null && medicineJSonList.size() > 0) {
-//            medicineList = new ArrayList<Medicine>();
-//            for(String medicineJSon : medicineJSonList) {
-//                medicineList.add(mapper.readValue(medicineJSon, Medicine.class));
-//            }
-//        }
         List<Medicine> medicineList = userDAO.getMedicines(userId);
 
         if(medicineList != null && medicineList.size() > 0) {
@@ -137,15 +99,11 @@ public class UserBD {
 
     public void addMedicine(Medicine medicine) throws Exception {
         log.info("UserBD.addMedicine()");
-
-//        userService.addMedicine(medicine);
         userDAO.addMedicine(medicine);
     }
 
     public void deleteMedicine(Medicine medicine) {
         log.info("UserBD.deleteMedicine()");
-
-//        userService.deleteMedicine(medicine);
         userDAO.deleteMedicine(medicine);
     }
 

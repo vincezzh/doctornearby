@@ -6,7 +6,6 @@ import com.akhaltech.model.Doctor;
 import com.akhaltech.model.DoctorSearch;
 import com.akhaltech.model.HTMLTemplate;
 import com.akhaltech.util.PropertyUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +25,6 @@ import java.util.Properties;
 public class DoctorBD {
 
     private final static Logger log = Logger.getLogger(DoctorBD.class);
-    private ObjectMapper mapper = new ObjectMapper();
-
-//    @Autowired
-//    private DoctorService doctorService;
 
     @Autowired
     private DoctorDAO doctorDAO;
@@ -39,15 +34,6 @@ public class DoctorBD {
 
     public List<Doctor> search(DoctorSearch search) throws Exception {
         log.info("DoctorBD.search()");
-
-//        List<String> doctorJSonList = doctorService.search(search);
-//        List<Doctor> doctorList = null;
-//        if(doctorJSonList != null && doctorJSonList.size() > 0) {
-//            doctorList = new ArrayList<Doctor>();
-//            for(String doctorJson : doctorJSonList) {
-//                doctorList.add(mapper.readValue(doctorJson, Doctor.class));
-//            }
-//        }
         List<Doctor> doctorList = doctorDAO.search(search);
 
         return doctorList;
@@ -55,12 +41,6 @@ public class DoctorBD {
 
     public Doctor getDoctorById(String id) throws Exception {
         log.info("DoctorBD.getDoctorById()");
-
-//        String doctorJson = doctorService.getDoctorById(id);
-//        Doctor doctor = null;
-//        if(doctorJson != null)
-//            doctor = mapper.readValue(doctorJson, Doctor.class);
-
         Doctor doctor = doctorDAO.getDoctorById(id);
 
         return doctor;

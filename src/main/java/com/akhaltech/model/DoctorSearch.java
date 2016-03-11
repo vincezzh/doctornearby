@@ -1,14 +1,9 @@
 package com.akhaltech.model;
 
 import com.akhaltech.constant.GlobalConstant;
-import org.bson.conversions.Bson;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
-
-import static com.mongodb.client.model.Filters.and;
-import static com.mongodb.client.model.Filters.eq;
 
 /**
  * Created by vince on 2015-09-15.
@@ -25,63 +20,10 @@ public class DoctorSearch {
     private String province;
     private String postcode;
     private String hospital;
+    private String phoneNumber;
+    private String address;
     private int skip = 0;
     private int limit = GlobalConstant.DEFAULT_PAGE_SIZE;
-
-    public Bson getSearchConditions() {
-        List<Bson> conditionList = new ArrayList<Bson>();
-
-        if(doctorId != null) {
-            Bson condition = eq("profile.id", doctorId);
-            conditionList.add(condition);
-        }
-        if(province != null && !"".equals(province.trim())) {
-            Bson condition = eq("province", province);
-            conditionList.add(condition);
-        }
-        if(surname != null && !"".equals(surname.trim())) {
-            Bson condition = eq("profile.surname", Pattern.compile(surname, Pattern.CASE_INSENSITIVE));
-            conditionList.add(condition);
-        }
-        if(givenname != null && !"".equals(givenname.trim())) {
-            Bson condition = eq("profile.givenName", Pattern.compile(givenname, Pattern.CASE_INSENSITIVE));
-            conditionList.add(condition);
-        }
-        if(location != null && !"".equals(location.trim())) {
-            Bson condition = eq("location.addressSummary", Pattern.compile(location, Pattern.CASE_INSENSITIVE));
-            conditionList.add(condition);
-        }
-        if(physicianType != null && !"".equals(physicianType.trim())) {
-            Bson condition = eq("specialtyList.name", Pattern.compile(physicianType, Pattern.CASE_INSENSITIVE));
-            conditionList.add(condition);
-        }
-        if(language != null && !"".equals(language.trim())) {
-            Bson condition = eq("profile.languageList", language);
-            conditionList.add(condition);
-        }
-        if(gender != null && !"".equals(gender.trim())) {
-            Bson condition = eq("profile.gender", gender);
-            conditionList.add(condition);
-        }
-        if(registrationStatus != null && !"".equals(registrationStatus.trim())) {
-            Bson condition = eq("registration.registrationStatus", Pattern.compile(registrationStatus, Pattern.CASE_INSENSITIVE));
-            conditionList.add(condition);
-        }
-        if(postcode != null && !"".equals(postcode.trim())) {
-            Bson condition = eq("location.addressSummary", Pattern.compile(postcode, Pattern.CASE_INSENSITIVE));
-            conditionList.add(condition);
-        }
-        if(hospital != null && !"".equals(hospital.trim())) {
-            Bson condition = eq("privilegeList.hospitalDetail", Pattern.compile(hospital, Pattern.CASE_INSENSITIVE));
-            conditionList.add(condition);
-        }
-
-        Bson allCondition = null;
-        if(conditionList.size() > 0) {
-            allCondition = and(conditionList);
-        }
-        return allCondition;
-    }
 
     public String getSearchConditionsSQL() {
         List<String> conditionList = new ArrayList<String>();
@@ -128,6 +70,34 @@ public class DoctorSearch {
         }
         if(hospital != null && !"".equals(hospital.trim())) {
             String sql = "select d._id from doctor d left join privilege p on p.doctor_id=d._id where p.hospital_detail like ('%" + hospital.trim() + "%')";
+            conditionList.add(sql);
+        }
+        if(address != null && !"".equals(address.trim())) {
+            String sql = "select d._id from doctor d left join location l on l.id=d.location_id where l.address_summary like ('%" + address.trim() + "%')";
+            conditionList.add(sql);
+        }
+        if(phoneNumber != null && !"".equals(phoneNumber.trim())) {
+            String cleanPN = phoneNumber.trim().replace(" ", "").replace("(", "").replace(")", "").replace("-", "");
+            if(cleanPN.length() > 0) {
+                if(cleanPN.startsWith("1")) {
+                    cleanPN = cleanPN.substring(1);
+                }
+            }
+
+            String pn1 = "";
+            String pn2 = "";
+            String pn3 = "";
+            if(cleanPN.length() >= 3) {
+                pn1 = cleanPN.substring(0, 3);
+                pn2 = cleanPN.substring(0, 3) + "-";
+                pn3 = "(" + cleanPN.substring(0, 3) + ") ";
+            }
+            if(cleanPN.length() >= 6) {
+                pn1 = cleanPN.substring(0, cleanPN.length());
+                pn2 = pn2 + cleanPN.substring(3, 6) + "-" + cleanPN.substring(6, cleanPN.length());
+                pn3 = pn3 + cleanPN.substring(3, 6) + "-" + cleanPN.substring(6, cleanPN.length());
+            }
+            String sql = "select d._id from doctor d left join location l on l.id=d.location_id where l.contact_summary like ('%" + pn1 + "%') or l.contact_summary like ('%" + pn2 + "%') or l.contact_summary like ('%" + pn3 + "%')";
             conditionList.add(sql);
         }
 
@@ -253,5 +223,21 @@ public class DoctorSearch {
 
     public void setGivenname(String givenname) {
         this.givenname = givenname;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

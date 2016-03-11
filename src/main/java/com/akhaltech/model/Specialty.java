@@ -7,6 +7,7 @@ public class Specialty {
     private String name;
     private String issueOn;
     private String type;
+    private String doctorId;
 
     public String getName() {
         return name;
@@ -30,5 +31,13 @@ public class Specialty {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(String doctorId) {
+        this.doctorId = doctorId;
     }
 }

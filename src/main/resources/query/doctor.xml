@@ -7,7 +7,10 @@
     </query>
 
     <query id="getSimpleDoctors">
-        select d._id, d.province, p.surname, p.given_name, l.address_summary, l.contact_summary from doctor d left join profile p on p.id=d.profile_id left join location l on l.id = d.location_id where d._id in
+        select d._id, d.province, p.surname, p.given_name, l.address_summary, l.contact_summary from doctor d
+            left join profile p on p.id=d.profile_id
+            left join location l on l.id = d.location_id
+            where d._id in
     </query>
 
     <query id="getDoctorByDoctorId">
@@ -20,6 +23,10 @@
 
     <query id="getSpecialtyByDoctorId">
         select * from specialty where doctor_id = ?
+    </query>
+
+    <query id="getSpecialtyByDoctorIdList">
+        select * from specialty where doctor_id in
     </query>
 
     <query id="getProfileByProfileId">

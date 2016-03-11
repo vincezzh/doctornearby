@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,9 +33,11 @@ public class DoctorDAOImpl extends NamedParameterJdbcDaoSupport implements Docto
     @Override
     public List<Doctor> search(DoctorSearch search) {
         log.info("DoctorDAOImpl: search() ----> Start");
-        final String sql = QueryUtil.getQuery("doctor", "search") + search.getSearchConditionsSQL() + " ON zz._id=d._id ORDER BY p.surname ASC LIMIT ?, ?";
+        final String sql = QueryUtil.getQuery("doctor", "search") + search.getSearchConditionsSQL() + " ON zz._id=d._id ORDER BY p.surname, p.given_name ASC LIMIT ?, ?";
         log.info(sql);
         List<Doctor> doctorList = getJdbcTemplate().query(sql, new SimpleDoctorRowMapper(), search.getSkip(), search.getLimit());
+        addSpecialtyListToDoctors(doctorList);
+
         log.info("DoctorDAOImpl: search() ----> End");
         return doctorList;
     }
@@ -54,9 +57,39 @@ public class DoctorDAOImpl extends NamedParameterJdbcDaoSupport implements Docto
             }
         }
         conditionSB.append(" ) ");
-        final String sql = QueryUtil.getQuery("doctor", "getSimpleDoctors") + conditionSB.toString() + " ORDER BY p.surname ASC";
+        final String sql = QueryUtil.getQuery("doctor", "getSimpleDoctors") + conditionSB.toString() + " ORDER BY p.surname, p.given_name ASC";
         List<Doctor> doctorList = getJdbcTemplate().query(sql, new SimpleDoctorRowMapper());
+        addSpecialtyListToDoctors(doctorList);
+
         return doctorList;
+    }
+
+    private void addSpecialtyListToDoctors(List<Doctor> doctorList) {
+        if(doctorList != null && doctorList.size() > 0) {
+            StringBuffer subConditionSB = new StringBuffer();
+            subConditionSB.append(" ( ");
+            for(int i=0; i<doctorList.size(); i++) {
+                if(i > 0) {
+                    subConditionSB.append(",");
+                }
+                subConditionSB.append("'" + doctorList.get(i).get_id() + "'");
+            }
+            subConditionSB.append(" ) ");
+            final String subSql = QueryUtil.getQuery("doctor", "getSpecialtyByDoctorIdList") + subConditionSB.toString();
+            List<Specialty> specialtyList = getJdbcTemplate().query(subSql, new SpecialtyRowMapper());
+            if(specialtyList != null && specialtyList.size() > 0) {
+                for(Specialty specialty : specialtyList) {
+                    for(Doctor doctor : doctorList) {
+                        if(doctor.get_id().equals(specialty.getDoctorId())) {
+                            if(doctor.getSpecialtyList() == null) {
+                                doctor.setSpecialtyList(new ArrayList<Specialty>());
+                            }
+                            doctor.getSpecialtyList().add(specialty);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -241,6 +274,7 @@ class SpecialtyRowMapper implements RowMapper<Specialty> {
         specialty.setName(rs.getString("name"));
         specialty.setIssueOn(rs.getString("issue_on"));
         specialty.setType(rs.getString("type"));
+        specialty.setDoctorId(rs.getString("doctor_id"));
 
         return specialty;
     }
